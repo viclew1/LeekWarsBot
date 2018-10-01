@@ -2,7 +2,6 @@ package com.leek.wars.client.util.rest;
 
 import java.io.IOException;
 
-import com.leek.wars.client.entities.Leek;
 import com.leek.wars.client.entities.responses.AiResponse;
 import com.leek.wars.client.entities.responses.AisResponse;
 import com.leek.wars.client.entities.responses.FightIdResponse;
@@ -54,20 +53,20 @@ public enum RequestProcessor {
 		return JacksonHelper.INSTANCE.jsonToObject(Response.class, response);
 	}
 
-	public Response registerLeekTournament(Leek leek, String token) throws ServerException, IOException {
-		String url = BASE_URL + API + LEEK + REGISTER_TOURNAMENT + SLASH + leek.getId() + SLASH + token;
+	public Response registerLeekTournament(Long leekId, String token) throws ServerException, IOException {
+		String url = BASE_URL + API + LEEK + REGISTER_TOURNAMENT + SLASH + leekId + SLASH + token;
 		String response = RequestHelper.INSTANCE.processGetRequest(url);
 		return JacksonHelper.INSTANCE.jsonToObject(Response.class, response);
 	}
 	
-	public OpponentLeeksResponse getLeekOpponents(Leek leek, String token) throws ServerException, IOException {
-		String url = BASE_URL + API + GARDEN + GET_LEEK_OPPONENTS + SLASH + leek.getId() + SLASH + token;
+	public OpponentLeeksResponse getLeekOpponents(Long leekId, String token) throws ServerException, IOException {
+		String url = BASE_URL + API + GARDEN + GET_LEEK_OPPONENTS + SLASH + leekId + SLASH + token;
 		String response = RequestHelper.INSTANCE.processGetRequest(url);
 		return JacksonHelper.INSTANCE.jsonToObject(OpponentLeeksResponse.class, response);
 	}
 	
-	public FightIdResponse startLeekFight(Leek leek, Leek target, String token) throws ServerException, IOException {
-		String url = BASE_URL + API + GARDEN + START_SOLO_FIGHT + SLASH + leek.getId() + SLASH + target.getId() + SLASH + token;
+	public FightIdResponse startLeekFight(Long leekId, Long targetId, String token) throws ServerException, IOException {
+		String url = BASE_URL + API + GARDEN + START_SOLO_FIGHT + SLASH + leekId + SLASH + targetId + SLASH + token;
 		String response = RequestHelper.INSTANCE.processGetRequest(url);
 		return JacksonHelper.INSTANCE.jsonToObject(FightIdResponse.class, response);
 	}

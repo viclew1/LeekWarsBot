@@ -51,7 +51,7 @@ public class AppCli {
 			logger.info("-------------");
 			logger.info("Leek : {}", l);
 
-			Response leekRegisterResponse = RequestProcessor.INSTANCE.registerLeekTournament(l, session.getToken());
+			Response leekRegisterResponse = RequestProcessor.INSTANCE.registerLeekTournament(l.getId(), session.getToken());
 			boolean leekRegisterOk = leekRegisterResponse.isSuccess() || leekRegisterResponse.getError() == Error.ALREADY_REGISTERED;
 			logger.info("Leek {} tournament register : {}", l.getName(), leekRegisterOk);
 		}
@@ -64,12 +64,12 @@ public class AppCli {
 
 
 			for (int i = 0 ; i < 25 ; i++) {
-				OpponentLeeksResponse opponents = RequestProcessor.INSTANCE.getLeekOpponents(l, session.getToken());
+				OpponentLeeksResponse opponents = RequestProcessor.INSTANCE.getLeekOpponents(l.getId(), session.getToken());
 
 				Leek chosenOpponent = selectOpponent(opponents.getOpponents());
 				logger.info("Chosen opponent : {}", chosenOpponent);
 
-				RequestProcessor.INSTANCE.startLeekFight(l, chosenOpponent, session.getToken());
+				RequestProcessor.INSTANCE.startLeekFight(l.getId(), chosenOpponent.getId(), session.getToken());
 			}
 		}
 	}
