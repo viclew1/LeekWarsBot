@@ -7,14 +7,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.leek.wars.client.entities.Error;
-import com.leek.wars.client.entities.Leek;
-import com.leek.wars.client.entities.responses.OpponentLeeksResponse;
-import com.leek.wars.client.entities.responses.Response;
 import com.leek.wars.client.entities.responses.SessionResponse;
 import com.leek.wars.client.util.GlobalProperties;
 import com.leek.wars.client.util.exceptions.MissingParameterException;
 import com.leek.wars.client.util.exceptions.ServerException;
+import com.leek.wars.client.util.nav.menus.AbstractMenu;
+import com.leek.wars.client.util.nav.menus.impl.HomeMenu;
 import com.leek.wars.client.util.parameters.Parameter;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
@@ -43,49 +41,15 @@ public class AppCli {
 		}
 
 		SessionResponse session = RequestProcessor.INSTANCE.getSession();
-		Response farmerRegisterResponse = RequestProcessor.INSTANCE.registerFarmerTournament(session.getToken());
-		boolean registerOk = farmerRegisterResponse.isSuccess() || farmerRegisterResponse.getError() == Error.ALREADY_REGISTERED;
-		logger.info("Farmer tournament register : {}", registerOk);
-
-		for (Leek l : session.getFarmer().getLeeks().values()) {
-			logger.info("-------------");
-			logger.info("Leek : {}", l);
-
-			Response leekRegisterResponse = RequestProcessor.INSTANCE.registerLeekTournament(l.getId(), session.getToken());
-			boolean leekRegisterOk = leekRegisterResponse.isSuccess() || leekRegisterResponse.getError() == Error.ALREADY_REGISTERED;
-			logger.info("Leek {} tournament register : {}", l.getName(), leekRegisterOk);
-		}
-
-		logger.info("#####################################");
-
-		for (Leek l : session.getFarmer().getLeeks().values()) {
-			logger.info("-------------");
-			logger.info("Leek : {}", l);
-
-
-			for (int i = 0 ; i < 25 ; i++) {
-				OpponentLeeksResponse opponents = RequestProcessor.INSTANCE.getLeekOpponents(l.getId(), session.getToken());
-
-				Leek chosenOpponent = selectOpponent(opponents.getOpponents());
-				logger.info("Chosen opponent : {}", chosenOpponent);
-
-				RequestProcessor.INSTANCE.startLeekFight(l.getId(), chosenOpponent.getId(), session.getToken());
-			}
-		}
-	}
-
-	private static Leek selectOpponent(List<Leek> opponents) {
-		if (opponents.isEmpty()) {
-			return null;
-		}
 		
-		opponents.sort((l1, l2) -> getValue(l1) - getValue(l2));
+		AbstractMenu nextMenu = new HomeMenu(null, session);
+		AbstractMenu currentMenu = null;
 		
-		return opponents.get(0);
-	}
-	
-	private static int getValue(Leek leek) {
-		return leek.getLevel() * leek.getLevel() + leek.getTalent();
+		while (nextMenu != null) {
+			AbstractMenu newNextMenu = nextMenu.run(currentMenu);
+			currentMenu = nextMenu;
+			nextMenu = newNextMenu;
+		}
 	}
 
 	public static void initParams(Parameter... parameters) throws MissingParameterException {

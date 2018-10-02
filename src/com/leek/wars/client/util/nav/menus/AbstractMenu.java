@@ -1,27 +1,33 @@
 package com.leek.wars.client.util.nav.menus;
 
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+
+import com.leek.wars.client.util.exceptions.ServerException;
 
 public abstract class AbstractMenu {
 
-	private String label;
+	private final String label;
+	private final AbstractMenu containingMenu;
 	
-	public AbstractMenu(String label) {
+	public AbstractMenu(AbstractMenu containingMenu, String label) {
+		this.containingMenu = containingMenu;
 		this.label = label;
 	}
 	
 	/**
 	 * executes the treatment of an abstract menu
 	 * @param caller calling abstract menu
-	 * @param properties properties used by the treatment
 	 * @return nextMenu
+	 * @throws IOException 
+	 * @throws ServerException 
 	 */
-	public abstract AbstractMenu run(AbstractMenu caller, Map<MenuProperties, Object> properties);
-	
-	protected abstract List<MenuProperties> getNeededProperties();
+	public abstract AbstractMenu run(AbstractMenu caller) throws ServerException, IOException;
 	
 	public String getLabel() {
 		return label;
+	}
+
+	public AbstractMenu getContainingMenu() {
+		return containingMenu;
 	}
 }

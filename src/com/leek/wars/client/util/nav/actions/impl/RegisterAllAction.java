@@ -1,29 +1,35 @@
 package com.leek.wars.client.util.nav.actions.impl;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.Map;
 
+import com.leek.wars.client.entities.Leek;
 import com.leek.wars.client.util.exceptions.ActionException;
+import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.nav.actions.Action;
 import com.leek.wars.client.util.nav.menus.AbstractMenu;
-import com.leek.wars.client.util.nav.menus.MenuProperties;
+import com.leek.wars.client.util.rest.RequestProcessor;
 
 public class RegisterAllAction extends Action {
 
-	public RegisterAllAction() {
-		super("Register all");
+	private String token;
+	private Map<Long, Leek> leeks;
+	
+	public RegisterAllAction(AbstractMenu containingMenu, String token, Map<Long, Leek> leeks) {
+		super(containingMenu, "Register all");
+		this.token = token;
+		this.leeks = leeks;
 	}
 
 	@Override
-	protected AbstractMenu processAction(AbstractMenu caller, Map<MenuProperties, Object> properties) throws ActionException {
-		//TODO impl
+	protected AbstractMenu processAction(AbstractMenu caller) throws ActionException {
+		for (Long id : leeks.keySet()) {
+			try {
+				RequestProcessor.INSTANCE.registerLeekTournament(id, token);
+			} catch (ServerException | IOException e) {
+				throw new ActionException(e);
+			}
+		}
 		return caller;
 	}
-
-	@Override
-	protected List<MenuProperties> getNeededProperties() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

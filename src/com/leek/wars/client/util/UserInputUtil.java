@@ -32,7 +32,7 @@ public enum UserInputUtil {
 
 	/**
 	 * Asks the user to chose between multiple options.
-	 * @param header line to display before the options
+	 * @param header line to display before the options (null if no header to display)
 	 * @param quitOption if true, the user will be able to press q to quit
 	 * @param options choices
 	 * @return the index of the chosen option (first choice = 0; last choice = options.length - 1). 
@@ -45,7 +45,10 @@ public enum UserInputUtil {
 			return -1;
 		}
 
-		System.out.println(header);
+		if (header != null) {
+			System.out.println(header);
+		}
+
 		System.out.println("----------");
 		for (int i = 1 ; i <= options.length ; i++) {
 			System.out.println("  (" + i + ") " + options[i-1]);
@@ -54,7 +57,7 @@ public enum UserInputUtil {
 
 		while (true) {
 			System.out.println("Your choice ? " + (quitOption ? "(q to quit)" : ""));
-			
+
 			String choiceStr = UserInputUtil.INSTANCE.getNextLine();
 
 			if (quitOption && choiceStr != null && "q".equalsIgnoreCase(choiceStr)) {

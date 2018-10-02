@@ -67,4 +67,8 @@ public class Leek {
 		return "Leek [id=" + id + ", name=" + name + ", color=" + color + ", capital=" + capital + ", level=" + level
 				+ ", talent=" + talent + ", skin=" + skin + ", hat=" + hat + "]";
 	}
+	
+	public String toSimpleString() {
+		return getName() + " (" + getLevel() + " - " + getTalent() + ")";
+	}
 }
