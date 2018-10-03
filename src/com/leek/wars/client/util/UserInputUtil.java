@@ -58,7 +58,7 @@ public enum UserInputUtil {
 		while (true) {
 			System.out.println("Your choice ? " + (quitOption ? "(q to quit)" : ""));
 
-			String choiceStr = UserInputUtil.INSTANCE.getNextLine();
+			String choiceStr = getNextLine();
 
 			if (quitOption && choiceStr != null && "q".equalsIgnoreCase(choiceStr)) {
 				return -1;
