@@ -57,6 +57,8 @@ public class AppCli {
 			logger.error("Can't init global properties", e);
 			return;
 		}
+		
+		logger.debug("Initialization OK");
 
 		Application.launch(ClientFrameFX.class, args);
 	}
@@ -83,7 +85,7 @@ public class AppCli {
 			}
 
 			File f = new File(param.getValue());
-			if (!f.exists()) {
+			if (!f.exists() || !f.isFile()) {
 				throw new NotAFileException(param.getKey(), param.getValue());
 			}
 		}
