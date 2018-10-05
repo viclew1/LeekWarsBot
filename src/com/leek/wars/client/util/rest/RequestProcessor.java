@@ -18,8 +18,6 @@ public enum RequestProcessor {
 	INSTANCE;
 	
 	private static final String BASE_URL = GlobalProperties.INSTANCE.getUrl();
-	private static final String LOGIN 	 = GlobalProperties.INSTANCE.getLogin();
-	private static final String PASSWORD = GlobalProperties.INSTANCE.getPassword();
 	
 	private static final String API = "/api";
 	
@@ -41,8 +39,8 @@ public enum RequestProcessor {
 	
 	private RequestProcessor() {}
 	
-	public SessionResponse getSession() throws ServerException, IOException {
-		String url = BASE_URL + API + FARMER + LOGIN_TOKEN + SLASH + LOGIN + SLASH + PASSWORD;
+	public SessionResponse getSession(String login, String password) throws ServerException, IOException {
+		String url = BASE_URL + API + FARMER + LOGIN_TOKEN + SLASH + login + SLASH + password;
 		String response = RequestHelper.INSTANCE.processGetRequest(url);
 		return JacksonHelper.INSTANCE.jsonToObject(SessionResponse.class, response);
 	}

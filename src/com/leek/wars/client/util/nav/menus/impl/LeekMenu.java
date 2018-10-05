@@ -25,7 +25,7 @@ public class LeekMenu extends Menu {
 	@Override
 	protected List<AbstractMenu> getMenuOptions() throws ServerException, IOException {
 		List<AbstractMenu> menus = new ArrayList<>();
-		menus.add(new AutoFightAction(this, leek.getId(), token));
+		menus.add(new AutoFightAction(this, token, leek, 5));
 		menus.add(new ManualFightAction(this, token, leek));
 		return menus;
 	}
