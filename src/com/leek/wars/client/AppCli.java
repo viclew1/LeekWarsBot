@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import com.leek.wars.client.graphic.ClientFrameFX;
 import com.leek.wars.client.util.GlobalProperties;
+import com.leek.wars.client.util.exceptions.LWException;
 import com.leek.wars.client.util.exceptions.MissingParameterException;
+import com.leek.wars.client.util.exceptions.NotADirectoryException;
 import com.leek.wars.client.util.exceptions.NotAFileException;
 import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.parameters.Parameter;
@@ -38,8 +40,9 @@ public class AppCli {
 		}
 
 		try {
-			verifyFiles(PATH_LOGS, PATH_PARAM, PATH_IMAGES);
-		} catch (NotAFileException e) {
+			verifyFiles(PATH_PARAM);
+			verifyDirectories(PATH_LOGS, PATH_IMAGES);
+		} catch (LWException e) {
 			logger.error("Problem accessing a parameter file", e);
 			return;
 		}
@@ -57,8 +60,22 @@ public class AppCli {
 
 		Application.launch(ClientFrameFX.class, args);
 	}
+	
+	private static void verifyDirectories(Parameter... params) throws NotADirectoryException {
+		for (Parameter param : params) {
 
-	private static void verifyFiles(Parameter... params) throws NotAFileException {
+			if (param.getValue() == null) {
+				continue;
+			}
+
+			File f = new File(param.getValue());
+			if (!f.exists() || !f.isDirectory()) {
+				throw new NotADirectoryException(param.getKey(), param.getValue());
+			}
+		}
+	}
+
+	private static <V> void verifyFiles(Parameter... params) throws NotAFileException {
 		for (Parameter param : params) {
 
 			if (param.getValue() == null) {
