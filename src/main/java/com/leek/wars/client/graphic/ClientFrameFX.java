@@ -14,6 +14,7 @@ public class ClientFrameFX extends Application {
 		LWGroup home = new HomeGroup(primaryStage);
 		LWScene scene = new LWScene(new Group());
 		
+		primaryStage.setTitle("Leek Wars Client");
 		primaryStage.setScene(scene);
 		home.call();
 	}

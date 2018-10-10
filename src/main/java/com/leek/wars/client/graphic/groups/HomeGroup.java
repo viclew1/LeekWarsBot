@@ -2,9 +2,9 @@ package com.leek.wars.client.graphic.groups;
 
 import com.leek.wars.client.graphic.LWGroup;
 import com.leek.wars.client.graphic.LWPane;
+import com.leek.wars.client.graphic.panes.BannerPane;
 import com.leek.wars.client.graphic.panes.LoginPane;
 
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -18,10 +18,12 @@ public class HomeGroup extends LWGroup {
 	@Override
 	protected Node generateChildren() {
 		GridPane childrenComplete = new GridPane();
+		
+		LWPane bannerPane = new BannerPane();
 		LWPane loginPane = new LoginPane();
 		
-		loginPane.getPane().setAlignment(Pos.CENTER);
-		childrenComplete.add(loginPane.getPane(), 0, 0, 5, 10);
+		childrenComplete.add(bannerPane.getPane(), 0, 0);
+		childrenComplete.add(loginPane.getPane(), 0, 1);
 		return childrenComplete;
 	}
 

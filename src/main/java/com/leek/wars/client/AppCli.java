@@ -23,33 +23,21 @@ import javafx.application.Application;
 
 public class AppCli {
 
-	private static final Logger logger = LoggerFactory.getLogger(AppCli.class);
-
+	private static Logger logger;
 
 	private static final Parameter PATH_LOGS = new Parameter("logs.path", false);
 	private static final Parameter PATH_PARAM = new Parameter("conf.path", true);
 	private static final Parameter PATH_IMAGES = new Parameter("images.path", true);
+	
+	
+	public static void main(String[] args) throws ServerException, IOException, LWException {
 
-	public static void main(String[] args) throws ServerException, IOException {
+		initParams(PATH_PARAM, PATH_IMAGES, PATH_LOGS);
 
-		try {
-			initParams(PATH_PARAM, PATH_IMAGES, PATH_LOGS);
-		} catch (MissingParameterException e) {
-			logger.error("Missing parameters", e);
-			return;
-		}
+		verifyFiles(PATH_PARAM);
+		verifyDirectories(PATH_LOGS, PATH_IMAGES);
 
-		try {
-			verifyFiles(PATH_PARAM);
-			verifyDirectories(PATH_LOGS, PATH_IMAGES);
-		} catch (LWException e) {
-			logger.error("Problem accessing a parameter file", e);
-			return;
-		}
-
-		if (PATH_LOGS.getValue() != null) {
-			initLogger();
-		}
+		initLogger();
 
 		try {
 			GlobalProperties.INSTANCE.init(PATH_PARAM.getValue());
@@ -57,12 +45,12 @@ public class AppCli {
 			logger.error("Can't init global properties", e);
 			return;
 		}
-		
+
 		logger.debug("Initialization OK");
 
 		Application.launch(ClientFrameFX.class, args);
 	}
-	
+
 	private static void verifyDirectories(Parameter... params) throws NotADirectoryException {
 		for (Parameter param : params) {
 
@@ -92,9 +80,12 @@ public class AppCli {
 	}
 
 	private static void initLogger() {
-		LocalDateTime ldt = LocalDateTime.now();
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("ddMMyyyy_HHmmss");
-		System.setProperty("log.name", PATH_LOGS.getValue() + "/" + ldt.format(dtf) + ".txt");
+		if (PATH_LOGS.getValue() != null) {
+			LocalDateTime ldt = LocalDateTime.now();
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("ddMMyyyy_HHmmss");
+			System.setProperty("log.name", PATH_LOGS.getValue() + "/" + ldt.format(dtf) + ".txt");
+		}
+		logger = LoggerFactory.getLogger(AppCli.class);
 	}
 
 	private static void initParams(Parameter... parameters) throws MissingParameterException {
