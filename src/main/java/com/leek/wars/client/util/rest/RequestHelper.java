@@ -58,12 +58,12 @@ enum RequestHelper implements AutoCloseable {
 
 	private String processRequest(HttpUriRequest request) throws IOException, ServerException {
 
+		logger.debug("Request  : " + request.getURI().toString());
 		HttpResponse response = client.execute(request);
 
 		int code = response.getStatusLine().getStatusCode();
 
 		String msg = readOutput(response);
-		logger.debug("Request  : " + request.getURI().toString());
 		logger.debug("Response : " + msg);
 		
 		if (code < HttpURLConnection.HTTP_BAD_REQUEST) {
