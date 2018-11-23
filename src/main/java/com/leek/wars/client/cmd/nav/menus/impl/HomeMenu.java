@@ -1,11 +1,11 @@
-package com.leek.wars.client.util.nav.menus.impl;
+package com.leek.wars.client.cmd.nav.menus.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
+import com.leek.wars.client.cmd.nav.menus.Menu;
 import com.leek.wars.client.entities.responses.SessionResponse;
-import com.leek.wars.client.util.nav.menus.AbstractMenu;
-import com.leek.wars.client.util.nav.menus.Menu;
 
 public class HomeMenu extends Menu {
 

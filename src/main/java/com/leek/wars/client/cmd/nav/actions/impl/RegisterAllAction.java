@@ -1,13 +1,13 @@
-package com.leek.wars.client.util.nav.actions.impl;
+package com.leek.wars.client.cmd.nav.actions.impl;
 
 import java.io.IOException;
 import java.util.Map;
 
+import com.leek.wars.client.cmd.nav.actions.Action;
+import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
 import com.leek.wars.client.entities.Leek;
 import com.leek.wars.client.util.exceptions.ActionException;
 import com.leek.wars.client.util.exceptions.ServerException;
-import com.leek.wars.client.util.nav.actions.Action;
-import com.leek.wars.client.util.nav.menus.AbstractMenu;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
 public class RegisterAllAction extends Action {

@@ -1,4 +1,4 @@
-package com.leek.wars.client.util.nav.menus;
+package com.leek.wars.client.cmd.nav.menus;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,16 +1,15 @@
 package com.leek.wars.client.util;
 
-import java.util.Scanner;
+import java.io.Console;
 
 public enum UserInputUtil {
 
 	INSTANCE;
 
-
-	private Scanner scanner;
-
+	private final Console console;
+	
 	private UserInputUtil() {
-		scanner = new Scanner(System.in);
+		console = System.console();
 	}
 
 	/**
@@ -20,13 +19,54 @@ public enum UserInputUtil {
 	 * @return Entered value
 	 * @throws TechnicalException
 	 */
-	public String askValue(String varDisplayName, boolean needed) {
+	public String askString(String varDisplayName, boolean hidden, boolean needed) {
 		System.out.println("Enter the " + varDisplayName + (needed ? "" : " (ENTER to skip)"));
 		String input;
-		while ((input = getNextLine()) == null && needed) {
+		while ((input = getNextLine(hidden)) == null && needed) {
 			System.out.println("Invalid input.");
 		}
 		return input;
+	}
+
+	/**
+	 * Asks the user to enter an integer value
+	 * @param varDisplayName
+	 * @param hidden
+	 * @param needed
+	 * @return
+	 */
+	public Integer askInteger(String varDisplayName, boolean hidden, boolean needed, Integer minValue, Integer maxValue) {
+		
+		System.out.println("Enter the " + varDisplayName + (needed ? "" : " (ENTER to skip)"));
+		while (true) {
+			String inputStr = getNextLine(hidden);
+			if (!needed && inputStr == null) {
+				return null;
+			}
+			if (inputStr == null) {
+				System.out.println("Invalid value - Empty input");
+				continue;
+			}
+			
+			Integer val;
+			try {
+				val = Integer.parseInt(inputStr);
+			} catch (NumberFormatException e) {
+				System.out.println("Invalid value - Not a number");
+				continue;
+			}
+			
+			if (minValue != null && val < minValue) {
+				System.out.println("Invalid value - Minimum value : " + minValue);
+				continue;
+			}
+			if (maxValue != null && val > maxValue) {
+				System.out.println("Invalid value - Maximum value : " + maxValue);
+				continue;
+			}
+			
+			return val;
+		}
 	}
 
 
@@ -58,7 +98,7 @@ public enum UserInputUtil {
 		while (true) {
 			System.out.println("Your choice ? " + (quitOption ? "(q to quit)" : ""));
 
-			String choiceStr = getNextLine();
+			String choiceStr = getNextLine(false);
 
 			if (quitOption && choiceStr != null && "q".equalsIgnoreCase(choiceStr)) {
 				return -1;
@@ -86,14 +126,10 @@ public enum UserInputUtil {
 	}
 
 	/**
-	 * returns scanner.nextLine() but if the nextLine is empty, returns null instead of an empty String
+	 * returns the next user input (and hides it if needed)
 	 */
-	public String getNextLine() {
-		String input = scanner.nextLine();
-		if (input != null && input.isEmpty()) {
-			input = null;
-		}
-		return input;
+	private String getNextLine(boolean hidden) {
+		return hidden ? new String(console.readPassword()) : console.readLine();
 	}
 
 }

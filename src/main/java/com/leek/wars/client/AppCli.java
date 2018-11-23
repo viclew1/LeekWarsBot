@@ -10,13 +10,16 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.leek.wars.client.cmd.CommandLineAppProcessor;
 import com.leek.wars.client.graphic.ClientFrameFX;
 import com.leek.wars.client.util.GlobalProperties;
+import com.leek.wars.client.util.UseMode;
 import com.leek.wars.client.util.exceptions.LWException;
 import com.leek.wars.client.util.exceptions.MissingParameterException;
 import com.leek.wars.client.util.exceptions.NotADirectoryException;
 import com.leek.wars.client.util.exceptions.NotAFileException;
 import com.leek.wars.client.util.exceptions.ServerException;
+import com.leek.wars.client.util.exceptions.WrongUseModeException;
 import com.leek.wars.client.util.parameters.Parameter;
 
 import javafx.application.Application;
@@ -28,14 +31,16 @@ public class AppCli {
 	private static final Parameter PATH_LOGS = new Parameter("logs.path", false);
 	private static final Parameter PATH_PARAM = new Parameter("conf.path", true);
 	private static final Parameter PATH_IMAGES = new Parameter("images.path", true);
-	
-	
+	private static final Parameter USE_MODE = new Parameter("mode", false);
+
 	public static void main(String[] args) throws ServerException, IOException, LWException {
 
-		initParams(PATH_PARAM, PATH_IMAGES, PATH_LOGS);
+		initParams(PATH_PARAM, PATH_IMAGES, PATH_LOGS, USE_MODE);
 
 		verifyFiles(PATH_PARAM);
 		verifyDirectories(PATH_LOGS, PATH_IMAGES);
+
+		UseMode useMode = defineUseMode(USE_MODE);
 
 		initLogger();
 
@@ -48,7 +53,31 @@ public class AppCli {
 
 		logger.debug("Initialization OK");
 
-		Application.launch(ClientFrameFX.class, args);
+		switch (useMode) {
+		case COMMAND_LINE:
+			CommandLineAppProcessor.INSTANCE.start();
+			break;
+		case GRAPHIC_INTERFACE:
+			Application.launch(ClientFrameFX.class, args);
+			break;
+		default:
+			System.out.println("Use mode not implemented yet ...");
+			break;
+		}
+	}
+
+	private static UseMode defineUseMode(Parameter useModeParam) throws WrongUseModeException {
+		UseMode useMode = UseMode.DEFAULT_USE_MODE;
+
+		String useModeStr = useModeParam.getValue();
+		if (useModeStr != null) {
+			useMode = UseMode.valueOf(useModeStr);
+			if (useMode == null) {
+				throw new WrongUseModeException(useModeStr);
+			}
+		}
+
+		return useMode;
 	}
 
 	private static void verifyDirectories(Parameter... params) throws NotADirectoryException {

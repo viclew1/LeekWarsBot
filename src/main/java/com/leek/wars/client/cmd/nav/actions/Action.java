@@ -1,10 +1,10 @@
-package com.leek.wars.client.util.nav.actions;
+package com.leek.wars.client.cmd.nav.actions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
 import com.leek.wars.client.util.exceptions.ActionException;
-import com.leek.wars.client.util.nav.menus.AbstractMenu;
 
 public abstract class Action extends AbstractMenu {
 
