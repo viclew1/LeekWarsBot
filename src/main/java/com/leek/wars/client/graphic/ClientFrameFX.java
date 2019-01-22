@@ -2,21 +2,19 @@ package com.leek.wars.client.graphic;
 
 import com.leek.wars.client.graphic.groups.HomeGroup;
 
-import javafx.application.Application;
-import javafx.scene.Group;
+import fr.lewon.ihm.builder.GenericApplication;
+import fr.lewon.ihm.builder.GenericGroup;
 import javafx.stage.Stage;
 
-public class ClientFrameFX extends Application {
+public class ClientFrameFX extends GenericApplication {
+
+	public ClientFrameFX() {
+		super("LeekWars Client");
+	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		
-		LWGroup home = new HomeGroup(primaryStage);
-		LWScene scene = new LWScene(new Group());
-		
-		primaryStage.setTitle("Leek Wars Client");
-		primaryStage.setScene(scene);
-		home.call();
+	protected GenericGroup getBaseGroup(Stage stage) {
+		return new HomeGroup(stage);
 	}
 
 }

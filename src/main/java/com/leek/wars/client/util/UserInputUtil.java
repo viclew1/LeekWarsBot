@@ -85,7 +85,7 @@ public enum UserInputUtil {
 			return -1;
 		}
 
-		if (header != null) {
+		if (header != null && ! "".equals(header)) {
 			System.out.println(header);
 		}
 

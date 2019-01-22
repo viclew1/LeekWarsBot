@@ -8,8 +8,11 @@ import com.leek.wars.client.util.exceptions.ServerException;
 
 public abstract class Menu extends AbstractMenu {
 
-	public Menu(AbstractMenu containingMenu, String label) {
+	private String description;
+	
+	public Menu(AbstractMenu containingMenu, String label, String description) {
 		super(containingMenu, label);
+		this.description = description;
 	}
 
 	@Override
@@ -25,7 +28,7 @@ public abstract class Menu extends AbstractMenu {
 		Object[] optionLabels = menus.stream()
 				.map(AbstractMenu::getLabel)
 				.toArray();
-		int choice = UserInputUtil.INSTANCE.askChoice(null, true, optionLabels);
+		int choice = UserInputUtil.INSTANCE.askChoice(description, true, optionLabels);
 
 		if (choice == -1) {
 			return null;

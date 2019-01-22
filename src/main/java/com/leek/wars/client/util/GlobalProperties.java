@@ -10,8 +10,6 @@ public enum GlobalProperties {
 	INSTANCE;
 	
 	private String url;
-	private String login;
-	private String password;
 	private String proxyUrl;
 	private String proxyPort;
 
@@ -21,8 +19,6 @@ public enum GlobalProperties {
 		Properties props = new Properties();
 		props.load(new FileInputStream(new File(propsPath)));
 		url      	= props.getProperty("url");
-		login    	= props.getProperty("login");
-		password 	= props.getProperty("password");
 		proxyUrl 	= props.getProperty("proxy_url");
 		proxyPort	= props.getProperty("proxy_port");
 	}
@@ -30,14 +26,6 @@ public enum GlobalProperties {
 
 	public String getUrl() {
 		return url;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public String getPassword() {
-		return password;
 	}
 
 	public String getProxyUrl() {

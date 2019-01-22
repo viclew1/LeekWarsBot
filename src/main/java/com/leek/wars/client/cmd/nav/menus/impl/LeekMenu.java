@@ -17,7 +17,7 @@ public class LeekMenu extends Menu {
 	private String token;
 	
 	public LeekMenu(AbstractMenu containingMenu, String token, Leek leek) {
-		super(containingMenu, "Leek menu : " + leek.toSimpleString());
+		super(containingMenu, "Leek menu : " + leek.toSimpleString(), null);
 		this.leek = leek;
 		this.token = token;
 	}

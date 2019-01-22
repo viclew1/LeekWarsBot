@@ -15,7 +15,7 @@ public class FarmerMenu extends Menu {
 	private Farmer farmer;
 	
 	public FarmerMenu(AbstractMenu containingMenu, String token, Farmer farmer) {
-		super(containingMenu, "Farmer menu - " + farmer.getName());
+		super(containingMenu, "Farmer menu - " + farmer.getName(), null);
 		this.farmer = farmer;
 		this.token = token;
 	}

@@ -14,6 +14,7 @@ import com.leek.wars.client.cmd.CommandLineAppProcessor;
 import com.leek.wars.client.graphic.ClientFrameFX;
 import com.leek.wars.client.util.GlobalProperties;
 import com.leek.wars.client.util.UseMode;
+import com.leek.wars.client.util.accounts.AccountHelper;
 import com.leek.wars.client.util.exceptions.LWException;
 import com.leek.wars.client.util.exceptions.MissingParameterException;
 import com.leek.wars.client.util.exceptions.NotADirectoryException;
@@ -31,25 +32,22 @@ public class AppCli {
 	private static final Parameter PATH_LOGS = new Parameter("logs.path", false);
 	private static final Parameter PATH_PARAM = new Parameter("conf.path", true);
 	private static final Parameter PATH_IMAGES = new Parameter("images.path", true);
+	private static final Parameter PATH_DATA = new Parameter("data.path", true);
 	private static final Parameter USE_MODE = new Parameter("mode", false);
 
 	public static void main(String[] args) throws ServerException, IOException, LWException {
 
-		initParams(PATH_PARAM, PATH_IMAGES, PATH_LOGS, USE_MODE);
+		initParams(PATH_PARAM, PATH_IMAGES, PATH_LOGS, PATH_DATA, USE_MODE);
 
 		verifyFiles(PATH_PARAM);
-		verifyDirectories(PATH_LOGS, PATH_IMAGES);
+		verifyDirectories(PATH_LOGS, PATH_IMAGES, PATH_DATA);
 
 		UseMode useMode = defineUseMode(USE_MODE);
 
 		initLogger();
-
-		try {
-			GlobalProperties.INSTANCE.init(PATH_PARAM.getValue());
-		} catch (IOException e) {
-			logger.error("Can't init global properties", e);
-			return;
-		}
+		
+		AccountHelper.INSTANCE.init(PATH_DATA.getValue());
+		GlobalProperties.INSTANCE.init(PATH_PARAM.getValue());
 
 		logger.debug("Initialization OK");
 
