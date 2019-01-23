@@ -15,6 +15,7 @@ import com.leek.wars.client.graphic.ClientFrameFX;
 import com.leek.wars.client.util.GlobalProperties;
 import com.leek.wars.client.util.UseMode;
 import com.leek.wars.client.util.accounts.AccountHelper;
+import com.leek.wars.client.util.ais.AisHelper;
 import com.leek.wars.client.util.exceptions.LWException;
 import com.leek.wars.client.util.exceptions.MissingParameterException;
 import com.leek.wars.client.util.exceptions.NotADirectoryException;
@@ -47,6 +48,7 @@ public class AppCli {
 		initLogger();
 		
 		AccountHelper.INSTANCE.init(PATH_DATA.getValue());
+		AisHelper.INSTANCE.init(PATH_DATA.getValue());
 		GlobalProperties.INSTANCE.init(PATH_PARAM.getValue());
 
 		logger.debug("Initialization OK");

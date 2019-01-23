@@ -6,7 +6,7 @@ public class AI {
 	private String name;
 	private Integer level;
 	private Boolean valid;
-	private Integer folder;
+	private Long folder;
 	private Integer v2;
 	
 	public Long getId() {
@@ -18,10 +18,10 @@ public class AI {
 	public void setValid(Boolean valid) {
 		this.valid = valid;
 	}
-	public Integer getFolder() {
+	public Long getFolder() {
 		return folder;
 	}
-	public void setFolder(Integer folder) {
+	public void setFolder(Long folder) {
 		this.folder = folder;
 	}
 	public Integer getV2() {
@@ -46,6 +46,9 @@ public class AI {
 		this.level = level;
 	}
 	
+	public boolean isDirectory() {
+		return level == null || level == 0;
+	}
 	
 	@Override
 	public String toString() {

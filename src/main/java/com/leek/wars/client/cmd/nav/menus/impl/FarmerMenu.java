@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.leek.wars.client.cmd.nav.actions.impl.RegisterAllAction;
+import com.leek.wars.client.cmd.nav.actions.impl.SaveAisAction;
 import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
 import com.leek.wars.client.cmd.nav.menus.Menu;
 import com.leek.wars.client.entities.Farmer;
@@ -27,6 +28,7 @@ public class FarmerMenu extends Menu {
 		for (Leek l : farmer.getLeeks().values()) {
 			menus.add(new LeekMenu(this, token, l));
 		}
+		menus.add(new SaveAisAction(this, farmer.getName(), token));
 		return menus;
 	}
 

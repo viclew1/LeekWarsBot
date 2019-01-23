@@ -24,7 +24,7 @@ public enum AccountHelper {
 	private AccountHelper() {}
 
 	public void init(String dataDirPath) throws IOException {
-		String accountsFilePath = dataDirPath + "/LWAccounts";
+		String accountsFilePath = dataDirPath + "/Accounts";
 		accountsFile = new File(accountsFilePath);
 		if (accountsFile.exists()) {
 			byte[] jsonAccountsByteArray = Files.readAllBytes(Paths.get(accountsFilePath));
