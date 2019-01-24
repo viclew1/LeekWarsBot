@@ -24,6 +24,9 @@ public class NodeFolder extends AbstractNode {
 	@Override
 	public void generate() {
 		FileHelper.INSTANCE.createDir(getPath());
+		for (AbstractNode node : getChildren()) {
+			node.generate();
+		}
 	}
 
 }

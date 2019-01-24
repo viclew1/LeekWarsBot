@@ -8,6 +8,7 @@ public class AI {
 	private Boolean valid;
 	private Long folder;
 	private Integer v2;
+	private String code;
 	
 	public Long getId() {
 		return id;
@@ -45,9 +46,11 @@ public class AI {
 	public void setLevel(Integer level) {
 		this.level = level;
 	}
-	
-	public boolean isDirectory() {
-		return level == null || level == 0;
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 	
 	@Override

@@ -35,13 +35,14 @@ public enum AisHelper {
 
 	public void saveAIs(String user, List<AI> ais, List<Folder> folders) {
 		String userDirPath = accountsDir.getAbsolutePath() + "/" + user + "/";
+		FileHelper.INSTANCE.createDir(userDirPath);
 		
 		Map<Long, NodeFolder> foldersNodes = folders.stream()
 				.map(f -> new NodeFolder(null, f))
 				.collect(Collectors.toMap(AbstractNode::getId, Function.identity()));
 		
 		List<NodeFile> filesNodes = ais.stream()
-				.map(ai -> new NodeFile(null, ai, null))
+				.map(ai -> new NodeFile(null, ai))
 				.collect(Collectors.toList());
 		
 		TreeRoot root = new TreeRoot(userDirPath);
@@ -80,5 +81,5 @@ public enum AisHelper {
 		parent.getChildren().add(node);
 		node.setParent(parent);
 	}
-
+	
 }

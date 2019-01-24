@@ -17,7 +17,6 @@ public enum FileHelper {
 
 	public File createDir(String path) {
 		File f = new File(path);
-		f.delete();
 		f.mkdir();
 		return f;
 	}

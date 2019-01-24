@@ -6,25 +6,16 @@ import com.leek.wars.client.util.files.FileHelper;
 public class NodeFile extends AbstractNode {
 
 	private final AI ai;
-	private String content;
 	
-	public NodeFile(AbstractNode parent, AI ai, String content) {
-		super(parent, null);
+	public NodeFile(AbstractNode parent, AI ai) {
+		super(parent, ai.getId());
 		this.ai = ai;
-		this.content = content;
 	}
 
 	
 	public AI getAi() {
 		return ai;
 	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-
 
 	@Override
 	public String getPath() {
@@ -33,7 +24,7 @@ public class NodeFile extends AbstractNode {
 
 	@Override
 	public void generate() {
-		FileHelper.INSTANCE.createFile(getPath(), getContent());
+		FileHelper.INSTANCE.createFile(getPath(), ai.getCode());
 	}
 
 }
