@@ -1,9 +1,9 @@
-package com.leek.wars.client.cmd.nav.actions.impl;
+package com.leek.wars.client.nav.actions;
 
-import com.leek.wars.client.cmd.nav.actions.Action;
-import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
 import com.leek.wars.client.util.accounts.AccountHelper;
-import com.leek.wars.client.util.exceptions.ActionException;
+
+import fr.lewon.client.menus.AbstractMenu;
+import fr.lewon.client.menus.Action;
 
 public class DeleteAccountAction extends Action {
 
@@ -15,7 +15,7 @@ public class DeleteAccountAction extends Action {
 	}
 
 	@Override
-	protected AbstractMenu processAction(AbstractMenu caller) throws ActionException {
+	protected AbstractMenu processAction(AbstractMenu caller) {
 		AccountHelper.INSTANCE.deleteAccount(user);
 		return caller;
 	}

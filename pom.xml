@@ -47,8 +47,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>JavaFxInterfaceBuilder</groupId>
-			<artifactId>JavaFxInterfaceBuilder</artifactId>
+			<groupId>DefaultClient</groupId>
+			<artifactId>DefaultClient</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
@@ -83,8 +83,8 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
-        			<finalName>LWCli</finalName>
-        			<appendAssemblyId>false</appendAssemblyId>
+					<finalName>LWCli</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 			</plugin>
 		</plugins>

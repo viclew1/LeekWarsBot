@@ -1,15 +1,14 @@
-package com.leek.wars.client.cmd.nav.menus.impl;
+package com.leek.wars.client.nav.menus;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leek.wars.client.cmd.nav.actions.impl.AddAccountAction;
-import com.leek.wars.client.cmd.nav.actions.impl.DeleteAccountAction;
-import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
-import com.leek.wars.client.cmd.nav.menus.Menu;
+import com.leek.wars.client.nav.actions.AddAccountAction;
+import com.leek.wars.client.nav.actions.DeleteAccountAction;
 import com.leek.wars.client.util.accounts.AccountHelper;
-import com.leek.wars.client.util.exceptions.ServerException;
+
+import fr.lewon.client.menus.AbstractMenu;
+import fr.lewon.client.menus.Menu;
 
 public class ManageSavedAccountsMenu extends Menu {
 
@@ -18,7 +17,7 @@ public class ManageSavedAccountsMenu extends Menu {
 	}
 
 	@Override
-	protected List<AbstractMenu> getMenuOptions() throws ServerException, IOException {
+	protected List<AbstractMenu> getMenuOptions() {
 		List<AbstractMenu> menus = new ArrayList<>();
 		for (String user : AccountHelper.INSTANCE.getUsers()) {
 			menus.add(new DeleteAccountAction(this, user));

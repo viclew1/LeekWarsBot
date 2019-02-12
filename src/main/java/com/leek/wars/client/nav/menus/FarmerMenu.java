@@ -1,14 +1,15 @@
-package com.leek.wars.client.cmd.nav.menus.impl;
+package com.leek.wars.client.nav.menus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leek.wars.client.cmd.nav.actions.impl.RegisterAllAction;
-import com.leek.wars.client.cmd.nav.actions.impl.SaveAisAction;
-import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
-import com.leek.wars.client.cmd.nav.menus.Menu;
 import com.leek.wars.client.entities.Farmer;
 import com.leek.wars.client.entities.Leek;
+import com.leek.wars.client.nav.actions.RegisterAllAction;
+import com.leek.wars.client.nav.actions.SaveAisAction;
+
+import fr.lewon.client.menus.AbstractMenu;
+import fr.lewon.client.menus.Menu;
 
 public class FarmerMenu extends Menu {
 

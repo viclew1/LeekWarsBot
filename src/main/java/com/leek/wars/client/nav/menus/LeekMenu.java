@@ -1,15 +1,14 @@
-package com.leek.wars.client.cmd.nav.menus.impl;
+package com.leek.wars.client.nav.menus;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leek.wars.client.cmd.nav.actions.impl.AutoFightAction;
-import com.leek.wars.client.cmd.nav.actions.impl.ManualFightAction;
-import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
-import com.leek.wars.client.cmd.nav.menus.Menu;
 import com.leek.wars.client.entities.Leek;
-import com.leek.wars.client.util.exceptions.ServerException;
+import com.leek.wars.client.nav.actions.AutoFightAction;
+import com.leek.wars.client.nav.actions.ManualFightAction;
+
+import fr.lewon.client.menus.AbstractMenu;
+import fr.lewon.client.menus.Menu;
 
 public class LeekMenu extends Menu {
 
@@ -23,7 +22,7 @@ public class LeekMenu extends Menu {
 	}
 
 	@Override
-	protected List<AbstractMenu> getMenuOptions() throws ServerException, IOException {
+	protected List<AbstractMenu> getMenuOptions() {
 		List<AbstractMenu> menus = new ArrayList<>();
 		menus.add(new AutoFightAction(this, token, leek));
 		menus.add(new ManualFightAction(this, token, leek));

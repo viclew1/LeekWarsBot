@@ -1,18 +1,23 @@
-package com.leek.wars.client.cmd.nav.actions.impl;
+package com.leek.wars.client.nav.actions;
 
 import java.io.IOException;
 
-import com.leek.wars.client.cmd.nav.actions.Action;
-import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.leek.wars.client.entities.Leek;
 import com.leek.wars.client.entities.responses.OpponentLeeksResponse;
 import com.leek.wars.client.util.UserInputUtil;
-import com.leek.wars.client.util.exceptions.ActionException;
 import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
+import fr.lewon.client.menus.AbstractMenu;
+import fr.lewon.client.menus.Action;
+
 public class ManualFightAction extends Action {
 
+	private static final Logger logger = LoggerFactory.getLogger(ManualFightAction.class);
+	
 	private Leek leek;
 	private String token;
 	
@@ -23,7 +28,7 @@ public class ManualFightAction extends Action {
 	}
 
 	@Override
-	public AbstractMenu processAction(AbstractMenu caller) throws ActionException {
+	public AbstractMenu processAction(AbstractMenu caller) {
 		try {
 			OpponentLeeksResponse olr = RequestProcessor.INSTANCE.getLeekOpponents(leek.getId(), token);
 			Object[] choices = olr.getOpponents().stream()
@@ -37,7 +42,7 @@ public class ManualFightAction extends Action {
 			
 			RequestProcessor.INSTANCE.startLeekFight(leek.getId(), olr.getOpponents().get(choice).getId(), token);
 		} catch (ServerException | IOException e) {
-			throw new ActionException(e);
+			logger.error("", e);
 		}
 		return caller;
 	}
