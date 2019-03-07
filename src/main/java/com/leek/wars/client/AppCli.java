@@ -14,6 +14,8 @@ import com.leek.wars.client.util.GlobalProperties;
 import com.leek.wars.client.util.UseMode;
 import com.leek.wars.client.util.accounts.AccountHelper;
 import com.leek.wars.client.util.ais.AisHelper;
+import com.leek.wars.client.util.auto.Exec;
+import com.leek.wars.client.util.jackson.JacksonHelper;
 
 import fr.lewon.client.AbstractAppClient;
 import fr.lewon.client.exceptions.CliException;
@@ -22,19 +24,19 @@ import fr.lewon.client.menus.Menu;
 import fr.lewon.client.menus.MenuRunner;
 import fr.lewon.client.util.parameters.Parameter;
 import fr.lewon.client.util.parameters.impl.DirParameter;
-import fr.lewon.client.util.parameters.impl.EnumParameter;
 import fr.lewon.client.util.parameters.impl.FileParameter;
 
 public class AppCli extends AbstractAppClient {
 
 	private static Logger logger;
 
-	private static final Parameter USE_MODE_PARAM = new EnumParameter<UseMode>("use.mode", false);
+	private static final Parameter PATH_EXEC_PARAM = new FileParameter("exec.path", false, true);
 	private static final Parameter PATH_LOGS_PARAM = new DirParameter("logs.path", false, true);
 	private static final Parameter PATH_CONF_PARAM = new FileParameter("conf.path", true, true);
 	private static final Parameter PATH_DATA_PARAM = new DirParameter("data.path", true, true);
 
 	private UseMode chosenUseMode;
+	private Exec autoExec;
 
 	private static void initLogger() {
 		if (PATH_LOGS_PARAM.getValue() != null) {
@@ -48,7 +50,7 @@ public class AppCli extends AbstractAppClient {
 	@Override
 	protected List<Parameter> getParamsToInit() {
 		List<Parameter> parametersToInit = new ArrayList<>();
-		parametersToInit.add(USE_MODE_PARAM);
+		parametersToInit.add(PATH_EXEC_PARAM);
 		parametersToInit.add(PATH_LOGS_PARAM);
 		parametersToInit.add(PATH_CONF_PARAM);
 		parametersToInit.add(PATH_DATA_PARAM);
@@ -62,11 +64,12 @@ public class AppCli extends AbstractAppClient {
 			AccountHelper.INSTANCE.init(PATH_DATA_PARAM.getValue());
 			AisHelper.INSTANCE.init(PATH_DATA_PARAM.getValue());
 			GlobalProperties.INSTANCE.init(PATH_CONF_PARAM.getValue());
-			String chosenUseModeStr = USE_MODE_PARAM.getValue();
-			if (chosenUseModeStr == null) {
+			String execFilePath = PATH_EXEC_PARAM.getValue();
+			if (execFilePath == null) {
 				chosenUseMode = UseMode.MENU;
 			} else {
-				chosenUseMode = UseMode.valueOf(chosenUseModeStr);
+				chosenUseMode = UseMode.AUTO;
+				autoExec = JacksonHelper.INSTANCE.fileToJson(Exec.class, execFilePath);
 			}
 			logger.info("Initialization OK");
 		} catch (IOException e) {
@@ -83,7 +86,7 @@ public class AppCli extends AbstractAppClient {
 	public void run() throws CliException {
 		switch (chosenUseMode) {
 		case AUTO:
-			throw new UnsupportedOperationException("Not implemented yet");
+			autoExec.process();
 		case MENU:
 			MenuRunner.INSTANCE.runMenu(getHomeMenu());
 			break;
