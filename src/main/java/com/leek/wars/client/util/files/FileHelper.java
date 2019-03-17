@@ -15,6 +15,30 @@ public enum FileHelper {
 
 	private FileHelper() {}
 
+
+	public void delete(String path) {
+		delete(new File(path));
+	}
+
+	public void delete(File f) {
+		if (f.isDirectory()) {
+			deleteDir(f);
+		} else {
+			deleteFile(f);
+		}
+	}
+
+	private void deleteDir(File f) {
+		for (File subF : f.listFiles()) {
+			delete(subF);
+		}
+		f.delete();
+	}
+
+	private void deleteFile(File f) {
+		f.delete();
+	}
+
 	public File createDir(String path) {
 		File f = new File(path);
 		f.mkdir();
