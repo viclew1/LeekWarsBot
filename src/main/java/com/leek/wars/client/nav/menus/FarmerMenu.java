@@ -1,14 +1,15 @@
-package com.leek.wars.client.cmd.nav.menus.impl;
+package com.leek.wars.client.nav.menus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leek.wars.client.cmd.nav.actions.impl.RegisterAllAction;
-import com.leek.wars.client.cmd.nav.actions.impl.SaveAisAction;
-import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
-import com.leek.wars.client.cmd.nav.menus.Menu;
 import com.leek.wars.client.entities.Farmer;
 import com.leek.wars.client.entities.Leek;
+import com.leek.wars.client.nav.actions.RegisterAllAction;
+import com.leek.wars.client.nav.actions.SaveAisAction;
+
+import fr.lewon.client.menus.AbstractMenu;
+import fr.lewon.client.menus.Menu;
 
 public class FarmerMenu extends Menu {
 
@@ -16,7 +17,7 @@ public class FarmerMenu extends Menu {
 	private Farmer farmer;
 	
 	public FarmerMenu(AbstractMenu containingMenu, String token, Farmer farmer) {
-		super(containingMenu, "Farmer menu - " + farmer.getName(), null);
+		super(containingMenu, null);
 		this.farmer = farmer;
 		this.token = token;
 	}
@@ -30,6 +31,11 @@ public class FarmerMenu extends Menu {
 		}
 		menus.add(new SaveAisAction(this, farmer.getName(), token));
 		return menus;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Farmer menu - " + farmer.getName() + " (fights left : " + farmer.getFights() + ")";
 	}
 
 }

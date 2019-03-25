@@ -1,6 +1,8 @@
 package com.leek.wars.client.util.exceptions;
 
-public class ServerException extends LWException {
+import fr.lewon.client.exceptions.CliException;
+
+public class ServerException extends CliException {
 
 	private static final long serialVersionUID = -7970506899840821801L;
 

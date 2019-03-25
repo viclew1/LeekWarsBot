@@ -1,20 +1,26 @@
 package com.leek.wars.client.util;
 
-public enum UseMode {
+import fr.lewon.client.util.ICliEnum;
 
-	COMMAND_LINE("Runs the application in command line"), 
-	GRAPHIC_INTERFACE("Runs the application in graphic interface"); 
-	
-	public static final UseMode DEFAULT_USE_MODE = COMMAND_LINE;
+public enum UseMode implements ICliEnum {
 
-	private final String description;
+	MENU("Run the client with a user interface"),
+	AUTO("Run the client automatically based on actions you defined");
 	
-	private UseMode(String description) {
-		this.description = description;
+	private String desc;
+	
+	private UseMode(String desc) {
+		this.desc = desc;
 	}
 
+	@Override
+	public String getKey() {
+		return name();
+	}
+
+	@Override
 	public String getDescription() {
-		return description;
+		return desc;
 	}
 	
 }

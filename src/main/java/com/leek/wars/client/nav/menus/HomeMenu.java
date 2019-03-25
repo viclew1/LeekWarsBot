@@ -1,17 +1,18 @@
-package com.leek.wars.client.cmd.nav.menus.impl;
+package com.leek.wars.client.nav.menus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leek.wars.client.cmd.nav.actions.impl.ConnectionAction;
-import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
-import com.leek.wars.client.cmd.nav.menus.Menu;
+import com.leek.wars.client.nav.actions.ConnectionAction;
 import com.leek.wars.client.util.accounts.AccountHelper;
+
+import fr.lewon.client.menus.AbstractMenu;
+import fr.lewon.client.menus.Menu;
 
 public class HomeMenu extends Menu {
 
 	public HomeMenu() {
-		super(null, "Home menu", null);
+		super(null, null);
 	}
 
 	@Override
@@ -22,6 +23,11 @@ public class HomeMenu extends Menu {
 		}
 		menus.add(new ManageSavedAccountsMenu(this));
 		return menus;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Home menu";
 	}
 
 }

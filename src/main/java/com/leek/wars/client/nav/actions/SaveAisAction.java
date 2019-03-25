@@ -1,31 +1,36 @@
-package com.leek.wars.client.cmd.nav.actions.impl;
+package com.leek.wars.client.nav.actions;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leek.wars.client.cmd.nav.actions.Action;
-import com.leek.wars.client.cmd.nav.menus.AbstractMenu;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.leek.wars.client.entities.AI;
 import com.leek.wars.client.entities.responses.AisResponse;
 import com.leek.wars.client.util.ais.AisHelper;
-import com.leek.wars.client.util.exceptions.ActionException;
 import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
+import fr.lewon.client.menus.AbstractMenu;
+import fr.lewon.client.menus.Action;
+
 public class SaveAisAction extends Action {
 
+	private static final Logger logger = LoggerFactory.getLogger(SaveAisAction.class);
+	
 	private String farmerName;
 	private String token;
 	
 	public SaveAisAction(AbstractMenu containingMenu, String farmerName, String token) {
-		super(containingMenu, "Save AIs");
+		super(containingMenu);
 		this.farmerName = farmerName;
 		this.token = token;
 	}
 
 	@Override
-	protected AbstractMenu processAction(AbstractMenu caller) throws ActionException {
+	protected AbstractMenu processAction(AbstractMenu caller) {
 		try {
 			AisResponse aisResponse = RequestProcessor.INSTANCE.getFarmerAis(token);
 			List<AI> ais = aisResponse.getAis();
@@ -36,10 +41,15 @@ public class SaveAisAction extends Action {
 			}
 			AisHelper.INSTANCE.saveAIs(farmerName, completeAis, aisResponse.getFolders());
 		} catch (ServerException | IOException e) {
-			throw new ActionException(e);
+			logger.error("", e);
 		}
 		
 		return caller;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Save AIs";
 	}
 
 }
