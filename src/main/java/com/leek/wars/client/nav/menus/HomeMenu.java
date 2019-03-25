@@ -12,7 +12,7 @@ import fr.lewon.client.menus.Menu;
 public class HomeMenu extends Menu {
 
 	public HomeMenu() {
-		super(null, "Home menu", null);
+		super(null, null);
 	}
 
 	@Override
@@ -23,6 +23,11 @@ public class HomeMenu extends Menu {
 		}
 		menus.add(new ManageSavedAccountsMenu(this));
 		return menus;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Home menu";
 	}
 
 }

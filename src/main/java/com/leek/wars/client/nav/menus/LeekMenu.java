@@ -16,7 +16,7 @@ public class LeekMenu extends Menu {
 	private String token;
 	
 	public LeekMenu(AbstractMenu containingMenu, String token, Leek leek) {
-		super(containingMenu, "Leek menu : " + leek.toSimpleString(), null);
+		super(containingMenu, null);
 		this.leek = leek;
 		this.token = token;
 	}
@@ -27,6 +27,11 @@ public class LeekMenu extends Menu {
 		menus.add(new AutoFightAction(this, token, leek));
 		menus.add(new ManualFightAction(this, token, leek));
 		return menus;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Leek menu : " + leek.toSimpleString();
 	}
 
 }

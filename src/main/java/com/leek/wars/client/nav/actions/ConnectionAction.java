@@ -21,7 +21,7 @@ public class ConnectionAction extends Action {
 	private String user;
 	
 	public ConnectionAction(AbstractMenu containingMenu, String user) {
-		super(containingMenu, "Connect account : " + user);
+		super(containingMenu);
 		this.user = user;
 	}
 
@@ -38,6 +38,11 @@ public class ConnectionAction extends Action {
 			logger.error("", e);
 		}
 		return caller;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Connect account : " + user;
 	}
 
 }

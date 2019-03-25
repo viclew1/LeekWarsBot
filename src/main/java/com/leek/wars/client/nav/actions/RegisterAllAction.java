@@ -21,7 +21,7 @@ public class RegisterAllAction extends Action {
 	private Map<Long, Leek> leeks;
 	
 	public RegisterAllAction(AbstractMenu containingMenu, String token, Map<Long, Leek> leeks) {
-		super(containingMenu, "Register all");
+		super(containingMenu);
 		this.token = token;
 		this.leeks = leeks;
 	}
@@ -36,5 +36,10 @@ public class RegisterAllAction extends Action {
 			}
 		}
 		return caller;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Register all";
 	}
 }

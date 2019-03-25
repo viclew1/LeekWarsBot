@@ -1,15 +1,15 @@
 package com.leek.wars.client.nav.actions;
 
-import com.leek.wars.client.util.UserInputUtil;
 import com.leek.wars.client.util.accounts.AccountHelper;
 
 import fr.lewon.client.menus.AbstractMenu;
 import fr.lewon.client.menus.Action;
+import fr.lewon.client.util.input.UserInputUtil;
 
 public class AddAccountAction extends Action {
 
 	public AddAccountAction(AbstractMenu containingMenu) {
-		super(containingMenu, "Add an account");
+		super(containingMenu);
 	}
 
 	@Override
@@ -18,6 +18,11 @@ public class AddAccountAction extends Action {
 		String password = UserInputUtil.INSTANCE.askString("password", true, true);
 		AccountHelper.INSTANCE.addAccount(user, password);
 		return caller;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Add an account";
 	}
 
 }

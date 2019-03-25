@@ -17,7 +17,7 @@ public class FarmerMenu extends Menu {
 	private Farmer farmer;
 	
 	public FarmerMenu(AbstractMenu containingMenu, String token, Farmer farmer) {
-		super(containingMenu, "Farmer menu - " + farmer.getName(), null);
+		super(containingMenu, null);
 		this.farmer = farmer;
 		this.token = token;
 	}
@@ -31,6 +31,11 @@ public class FarmerMenu extends Menu {
 		}
 		menus.add(new SaveAisAction(this, farmer.getName(), token));
 		return menus;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Farmer menu - " + farmer.getName() + " (fights left : " + farmer.getFights() + ")";
 	}
 
 }

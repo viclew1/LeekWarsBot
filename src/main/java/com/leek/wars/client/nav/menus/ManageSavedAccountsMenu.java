@@ -13,7 +13,7 @@ import fr.lewon.client.menus.Menu;
 public class ManageSavedAccountsMenu extends Menu {
 
 	public ManageSavedAccountsMenu(AbstractMenu containingMenu) {
-		super(containingMenu, "Manage saved accounts", null);
+		super(containingMenu, null);
 	}
 
 	@Override
@@ -24,6 +24,11 @@ public class ManageSavedAccountsMenu extends Menu {
 		}
 		menus.add(new AddAccountAction(this));
 		return menus;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Manage saved accounts";
 	}
 
 }

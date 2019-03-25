@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 
 import com.leek.wars.client.entities.Leek;
 import com.leek.wars.client.entities.responses.OpponentLeeksResponse;
-import com.leek.wars.client.util.UserInputUtil;
 import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
 import fr.lewon.client.menus.AbstractMenu;
 import fr.lewon.client.menus.Action;
+import fr.lewon.client.util.input.UserInputUtil;
 
 public class AutoFightAction extends Action {
 
@@ -23,7 +23,7 @@ public class AutoFightAction extends Action {
 	private String token;
 
 	public AutoFightAction(AbstractMenu containingMenu, String token, Leek leek) {
-		super(containingMenu, "Auto Fight");
+		super(containingMenu);
 		this.leek = leek;
 		this.token = token;
 	}
@@ -57,5 +57,10 @@ public class AutoFightAction extends Action {
 	
 	private int getValue(Leek leek) {
 		return leek.getLevel() * leek.getLevel() + leek.getTalent();
+	}
+
+	@Override
+	public String getLabel() {
+		return "Auto Fight";
 	}
 }

@@ -24,7 +24,7 @@ public class SaveAisAction extends Action {
 	private String token;
 	
 	public SaveAisAction(AbstractMenu containingMenu, String farmerName, String token) {
-		super(containingMenu, "Save AIs");
+		super(containingMenu);
 		this.farmerName = farmerName;
 		this.token = token;
 	}
@@ -45,6 +45,11 @@ public class SaveAisAction extends Action {
 		}
 		
 		return caller;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Save AIs";
 	}
 
 }

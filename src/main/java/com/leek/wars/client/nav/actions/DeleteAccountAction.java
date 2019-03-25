@@ -10,7 +10,7 @@ public class DeleteAccountAction extends Action {
 	private String user;
 	
 	public DeleteAccountAction(AbstractMenu containingMenu, String user) {
-		super(containingMenu, "Delete " + user);
+		super(containingMenu);
 		this.user = user;
 	}
 
@@ -18,6 +18,11 @@ public class DeleteAccountAction extends Action {
 	protected AbstractMenu processAction(AbstractMenu caller) {
 		AccountHelper.INSTANCE.deleteAccount(user);
 		return caller;
+	}
+
+	@Override
+	public String getLabel() {
+		return "Delete " + user;
 	}
 
 }
