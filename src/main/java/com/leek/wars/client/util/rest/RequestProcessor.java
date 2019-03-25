@@ -9,7 +9,6 @@ import com.leek.wars.client.entities.responses.FightResponse;
 import com.leek.wars.client.entities.responses.OpponentLeeksResponse;
 import com.leek.wars.client.entities.responses.Response;
 import com.leek.wars.client.entities.responses.SessionResponse;
-import com.leek.wars.client.util.GlobalProperties;
 import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.jackson.JacksonHelper;
 
@@ -17,7 +16,7 @@ public enum RequestProcessor {
 
 	INSTANCE;
 	
-	private static final String BASE_URL = GlobalProperties.INSTANCE.getUrl();
+	private static final String BASE_URL = "https://leekwars.com/";
 	
 	private static final String API = "/api";
 	
