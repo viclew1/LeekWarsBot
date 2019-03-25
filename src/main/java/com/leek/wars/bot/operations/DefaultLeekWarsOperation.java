@@ -12,7 +12,9 @@ import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
 import fr.lewon.bot.runner.BotRunner;
+import fr.lewon.bot.runner.Delay;
 import fr.lewon.bot.runner.Operation;
+import fr.lewon.bot.runner.TimeScale;
 
 public class DefaultLeekWarsOperation extends Operation {
 
@@ -24,7 +26,7 @@ public class DefaultLeekWarsOperation extends Operation {
 	}
 
 	@Override
-	public Integer process() throws Exception {
+	public Delay process() throws Exception {
 		SessionResponse session = sessionManager.getSession();
 		int fightsCount = session.getFarmer().getFights();
 		Collection<Leek> leeks = session.getFarmer().getLeeks().values();
@@ -34,7 +36,7 @@ public class DefaultLeekWarsOperation extends Operation {
 			processFight(l, session.getToken(), fightsPerLeek);
 		}
 		//This bots runs once a day
-		return 24 * 3600 - 5;
+		return new Delay(1, TimeScale.DAYS);
 	}
 
 	private void processFight(Leek leek, String token, int count) throws ServerException, IOException {
