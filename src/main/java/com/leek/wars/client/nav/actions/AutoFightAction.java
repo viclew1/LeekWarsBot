@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import com.leek.wars.client.entities.Leek;
 import com.leek.wars.client.entities.responses.OpponentLeeksResponse;
-import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
+import fr.lewon.bot.errors.ServerException;
 import fr.lewon.client.menus.AbstractMenu;
 import fr.lewon.client.menus.Action;
 import fr.lewon.client.util.input.UserInputUtil;
@@ -18,7 +18,7 @@ import fr.lewon.client.util.input.UserInputUtil;
 public class AutoFightAction extends Action {
 
 	private static final Logger logger = LoggerFactory.getLogger(AutoFightAction.class);
-	
+
 	private Leek leek;
 	private String token;
 
@@ -54,7 +54,7 @@ public class AutoFightAction extends Action {
 	private int getDist(Leek l1, Leek l2) {
 		return Math.abs(getValue(l1) - getValue(l2));
 	}
-	
+
 	private int getValue(Leek leek) {
 		return leek.getLevel() * leek.getLevel() + leek.getTalent();
 	}

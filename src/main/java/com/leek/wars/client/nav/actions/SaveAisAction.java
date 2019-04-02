@@ -10,19 +10,19 @@ import org.slf4j.LoggerFactory;
 import com.leek.wars.client.entities.AI;
 import com.leek.wars.client.entities.responses.AisResponse;
 import com.leek.wars.client.util.ais.AisHelper;
-import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
+import fr.lewon.bot.errors.ServerException;
 import fr.lewon.client.menus.AbstractMenu;
 import fr.lewon.client.menus.Action;
 
 public class SaveAisAction extends Action {
 
 	private static final Logger logger = LoggerFactory.getLogger(SaveAisAction.class);
-	
+
 	private String farmerName;
 	private String token;
-	
+
 	public SaveAisAction(AbstractMenu containingMenu, String farmerName, String token) {
 		super(containingMenu);
 		this.farmerName = farmerName;
@@ -43,7 +43,7 @@ public class SaveAisAction extends Action {
 		} catch (ServerException | IOException e) {
 			logger.error("", e);
 		}
-		
+
 		return caller;
 	}
 

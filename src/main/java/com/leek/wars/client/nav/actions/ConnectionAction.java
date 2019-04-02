@@ -8,18 +8,18 @@ import org.slf4j.LoggerFactory;
 import com.leek.wars.client.entities.responses.SessionResponse;
 import com.leek.wars.client.nav.menus.FarmerMenu;
 import com.leek.wars.client.util.accounts.AccountHelper;
-import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
+import fr.lewon.bot.errors.ServerException;
 import fr.lewon.client.menus.AbstractMenu;
 import fr.lewon.client.menus.Action;
 
 public class ConnectionAction extends Action {
 
 	private static final Logger logger = LoggerFactory.getLogger(ConnectionAction.class);
-	
+
 	private String user;
-	
+
 	public ConnectionAction(AbstractMenu containingMenu, String user) {
 		super(containingMenu);
 		this.user = user;

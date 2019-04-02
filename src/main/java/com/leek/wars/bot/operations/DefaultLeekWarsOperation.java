@@ -8,9 +8,9 @@ import com.leek.wars.bot.util.LWSessionManager;
 import com.leek.wars.client.entities.Leek;
 import com.leek.wars.client.entities.responses.OpponentLeeksResponse;
 import com.leek.wars.client.entities.responses.SessionResponse;
-import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
+import fr.lewon.bot.errors.ServerException;
 import fr.lewon.bot.runner.BotRunner;
 import fr.lewon.bot.runner.Delay;
 import fr.lewon.bot.runner.Operation;
@@ -20,13 +20,12 @@ public class DefaultLeekWarsOperation extends Operation {
 
 	private final LWSessionManager sessionManager;
 
-	public DefaultLeekWarsOperation(BotRunner runner, LWSessionManager sessionManager) {
-		super(runner);
+	public DefaultLeekWarsOperation(LWSessionManager sessionManager) {
 		this.sessionManager = sessionManager;
 	}
 
 	@Override
-	public Delay process() throws Exception {
+	public Delay process(BotRunner runner) throws Exception {
 		SessionResponse session = sessionManager.getSession();
 		int fightsCount = session.getFarmer().getFights();
 		Collection<Leek> leeks = session.getFarmer().getLeeks().values();
@@ -35,7 +34,6 @@ public class DefaultLeekWarsOperation extends Operation {
 			RequestProcessor.INSTANCE.registerLeekTournament(l.getId(), session.getToken());
 			processFight(l, session.getToken(), fightsPerLeek);
 		}
-		//This bots runs once a day
 		return new Delay(1, TimeScale.DAYS);
 	}
 
@@ -48,7 +46,7 @@ public class DefaultLeekWarsOperation extends Operation {
 			RequestProcessor.INSTANCE.startLeekFight(leek.getId(), selectOpponent(leek, olr.getOpponents()).getId(), token);
 		}
 	}
-	
+
 	private Leek selectOpponent(Leek leek, List<Leek> opponents) {
 		opponents.sort((l1, l2) -> getDist(leek, l1) - getDist(leek, l2));
 		return opponents.get(0);
@@ -57,7 +55,7 @@ public class DefaultLeekWarsOperation extends Operation {
 	private int getDist(Leek l1, Leek l2) {
 		return Math.abs(getValue(l1) - getValue(l2));
 	}
-	
+
 	private int getValue(Leek leek) {
 		return leek.getLevel() * leek.getLevel() + leek.getTalent();
 	}

@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import com.leek.wars.client.entities.Leek;
 import com.leek.wars.client.entities.responses.OpponentLeeksResponse;
-import com.leek.wars.client.util.exceptions.ServerException;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
+import fr.lewon.bot.errors.ServerException;
 import fr.lewon.client.menus.AbstractMenu;
 import fr.lewon.client.menus.Action;
 import fr.lewon.client.util.input.Choice;
@@ -20,10 +20,10 @@ import fr.lewon.client.util.input.UserInputUtil;
 public class ManualFightAction extends Action {
 
 	private static final Logger logger = LoggerFactory.getLogger(ManualFightAction.class);
-	
+
 	private Leek leek;
 	private String token;
-	
+
 	public ManualFightAction(AbstractMenu containingMenu, String token, Leek leek) {
 		super(containingMenu);
 		this.leek = leek;
@@ -41,7 +41,7 @@ public class ManualFightAction extends Action {
 			if (choice == null) {
 				return caller;
 			}
-			
+
 			RequestProcessor.INSTANCE.startLeekFight(leek.getId(), leek.getId(), token);
 		} catch (ServerException | IOException e) {
 			logger.error("", e);
