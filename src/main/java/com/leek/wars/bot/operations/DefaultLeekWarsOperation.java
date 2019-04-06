@@ -13,37 +13,36 @@ import com.leek.wars.client.util.rest.RequestProcessor;
 import fr.lewon.bot.errors.ServerException;
 import fr.lewon.bot.runner.BotRunner;
 import fr.lewon.bot.runner.Delay;
-import fr.lewon.bot.runner.Operation;
 import fr.lewon.bot.runner.TimeScale;
 
-public class DefaultLeekWarsOperation extends Operation {
+public class DefaultLeekWarsOperation extends LeekWarsOperation {
 
-	private final LWSessionManager sessionManager;
-
-	public DefaultLeekWarsOperation(LWSessionManager sessionManager) {
-		this.sessionManager = sessionManager;
+	public DefaultLeekWarsOperation(LWSessionManager manager, RequestProcessor requestProcessor) {
+		super(manager, requestProcessor);
 	}
 
 	@Override
-	public Delay process(BotRunner runner) throws Exception {
+	public Delay doProcess(BotRunner runner, LWSessionManager sessionManager, RequestProcessor requestProcessor)
+			throws Exception {
+
 		SessionResponse session = sessionManager.getSession();
 		int fightsCount = session.getFarmer().getFights();
 		Collection<Leek> leeks = session.getFarmer().getLeeks().values();
 		int fightsPerLeek = fightsCount / 3;
 		for (Leek l : leeks) {
-			RequestProcessor.INSTANCE.registerLeekTournament(l.getId(), session.getToken());
-			processFight(l, session.getToken(), fightsPerLeek);
+			requestProcessor.registerLeekTournament(l.getId(), session.getToken());
+			processFight(requestProcessor, l, session.getToken(), fightsPerLeek);
 		}
 		return new Delay(1, TimeScale.DAYS);
 	}
 
-	private void processFight(Leek leek, String token, int count) throws ServerException, IOException {
+	private void processFight(RequestProcessor requestProcessor, Leek leek, String token, int count) throws ServerException, IOException {
 		for (int i = 0 ; i < count ; i++) {
-			OpponentLeeksResponse olr = RequestProcessor.INSTANCE.getLeekOpponents(leek.getId(), token);
+			OpponentLeeksResponse olr = requestProcessor.getLeekOpponents(leek.getId(), token);
 			if (olr.getOpponents() == null || olr.getOpponents().isEmpty()) {
 				break;
 			}
-			RequestProcessor.INSTANCE.startLeekFight(leek.getId(), selectOpponent(leek, olr.getOpponents()).getId(), token);
+			requestProcessor.startLeekFight(leek.getId(), selectOpponent(leek, olr.getOpponents()).getId(), token);
 		}
 	}
 

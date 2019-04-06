@@ -1,7 +1,5 @@
 package com.leek.wars.client.nav.actions;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +8,6 @@ import com.leek.wars.client.nav.menus.FarmerMenu;
 import com.leek.wars.client.util.accounts.AccountHelper;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
-import fr.lewon.bot.errors.ServerException;
 import fr.lewon.client.menus.AbstractMenu;
 import fr.lewon.client.menus.Action;
 
@@ -27,14 +24,14 @@ public class ConnectionAction extends Action {
 
 	@Override
 	protected AbstractMenu processAction(AbstractMenu caller) {
-		try {
-			SessionResponse sr = RequestProcessor.INSTANCE.getSession(user, AccountHelper.INSTANCE.getPassword(user));
+		try (RequestProcessor requestProcessor = new RequestProcessor()){
+			SessionResponse sr = requestProcessor.getSession(user, AccountHelper.INSTANCE.getPassword(user));
 			if (!sr.isSuccess()) {
 				System.out.println("Connection to user " + user + " impossible.");
 				return caller;
 			}
 			return new FarmerMenu(caller, sr.getToken(), sr.getFarmer());
-		} catch (ServerException | IOException e) {
+		} catch (Exception e) {
 			logger.error("", e);
 		}
 		return caller;

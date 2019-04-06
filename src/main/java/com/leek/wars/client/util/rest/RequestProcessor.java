@@ -21,8 +21,6 @@ import fr.lewon.bot.http.RequestHelper;
 
 public class RequestProcessor extends AbstractRequestProcessor {
 
-	public static final RequestProcessor INSTANCE = new RequestProcessor();
-
 	private static final String BASE_URL = "https://leekwars.com/";
 
 	private static final String API = "/api";
@@ -43,7 +41,7 @@ public class RequestProcessor extends AbstractRequestProcessor {
 
 	private static final String SLASH = "/";
 
-	private RequestProcessor() {
+	public RequestProcessor() {
 		super(new RequestHelper());
 	}
 

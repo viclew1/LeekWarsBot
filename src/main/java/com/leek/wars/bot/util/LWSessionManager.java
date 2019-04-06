@@ -5,15 +5,15 @@ import com.leek.wars.client.util.rest.RequestProcessor;
 
 import fr.lewon.bot.http.AbstractSessionManager;
 
-public class LWSessionManager extends AbstractSessionManager<SessionResponse> {
+public class LWSessionManager extends AbstractSessionManager<RequestProcessor, SessionResponse> {
 
-	public LWSessionManager(String login, String password) {
-		super(login, password, 3600 * 2 * 1000L);
+	public LWSessionManager(RequestProcessor requestProcessor, String login, String password) {
+		super(requestProcessor, login, password, 3600 * 2 * 1000L);
 	}
 
 	@Override
-	protected SessionResponse generateSessionObject(String login, String password) throws Exception {
-		return RequestProcessor.INSTANCE.getSession(login, password);
+	protected SessionResponse generateSessionObject(RequestProcessor requestProcessor, String login, String password) throws Exception {
+		return requestProcessor.getSession(login, password);
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.leek.wars.client.nav.actions;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,7 +10,6 @@ import com.leek.wars.client.entities.Leek;
 import com.leek.wars.client.entities.responses.OpponentLeeksResponse;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
-import fr.lewon.bot.errors.ServerException;
 import fr.lewon.client.menus.AbstractMenu;
 import fr.lewon.client.menus.Action;
 import fr.lewon.client.util.input.Choice;
@@ -32,8 +30,8 @@ public class ManualFightAction extends Action {
 
 	@Override
 	public AbstractMenu processAction(AbstractMenu caller) {
-		try {
-			OpponentLeeksResponse olr = RequestProcessor.INSTANCE.getLeekOpponents(leek.getId(), token);
+		try (RequestProcessor requestProcessor = new RequestProcessor()){
+			OpponentLeeksResponse olr = requestProcessor.getLeekOpponents(leek.getId(), token);
 			List<Choice<Leek>> opponentLeeks = olr.getOpponents().stream()
 					.map(l -> new Choice<>(l.toSimpleString(), l))
 					.collect(Collectors.toList());
@@ -42,8 +40,8 @@ public class ManualFightAction extends Action {
 				return caller;
 			}
 
-			RequestProcessor.INSTANCE.startLeekFight(leek.getId(), leek.getId(), token);
-		} catch (ServerException | IOException e) {
+			requestProcessor.startLeekFight(leek.getId(), leek.getId(), token);
+		} catch (Exception e) {
 			logger.error("", e);
 		}
 		return caller;

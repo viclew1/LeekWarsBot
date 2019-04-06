@@ -1,6 +1,5 @@
 package com.leek.wars.client.nav.actions;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,7 +9,6 @@ import com.leek.wars.client.entities.Leek;
 import com.leek.wars.client.entities.responses.OpponentLeeksResponse;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
-import fr.lewon.bot.errors.ServerException;
 import fr.lewon.client.menus.AbstractMenu;
 import fr.lewon.client.menus.Action;
 import fr.lewon.client.util.input.UserInputUtil;
@@ -30,17 +28,17 @@ public class AutoFightAction extends Action {
 
 	@Override
 	public AbstractMenu processAction(AbstractMenu caller) {
-		try {
+		try (RequestProcessor requestProcessor = new RequestProcessor()){
 			Integer fightCount = UserInputUtil.INSTANCE.askInteger("fight count", false, true, 0, null);
 			for (int i = 0 ; i < fightCount ; i++) {
-				OpponentLeeksResponse olr = RequestProcessor.INSTANCE.getLeekOpponents(leek.getId(), token);
+				OpponentLeeksResponse olr = requestProcessor.getLeekOpponents(leek.getId(), token);
 				if (olr.getOpponents() == null || olr.getOpponents().isEmpty()) {
 					logger.error("No opponent");
 					break;
 				}
-				RequestProcessor.INSTANCE.startLeekFight(leek.getId(), selectOpponent(olr.getOpponents()).getId(), token);
+				requestProcessor.startLeekFight(leek.getId(), selectOpponent(olr.getOpponents()).getId(), token);
 			}
-		} catch (NumberFormatException | ServerException | IOException e) {
+		} catch (Exception e) {
 			logger.error("Auto fight error", e);
 		}
 		return caller;

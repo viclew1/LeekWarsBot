@@ -1,6 +1,5 @@
 package com.leek.wars.client.nav.actions;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import com.leek.wars.client.entities.responses.AisResponse;
 import com.leek.wars.client.util.ais.AisHelper;
 import com.leek.wars.client.util.rest.RequestProcessor;
 
-import fr.lewon.bot.errors.ServerException;
 import fr.lewon.client.menus.AbstractMenu;
 import fr.lewon.client.menus.Action;
 
@@ -31,16 +29,16 @@ public class SaveAisAction extends Action {
 
 	@Override
 	protected AbstractMenu processAction(AbstractMenu caller) {
-		try {
-			AisResponse aisResponse = RequestProcessor.INSTANCE.getFarmerAis(token);
+		try (RequestProcessor requestProcessor = new RequestProcessor()){
+			AisResponse aisResponse = requestProcessor.getFarmerAis(token);
 			List<AI> ais = aisResponse.getAis();
 			List<AI> completeAis = new ArrayList<>(ais.size());
 			for (AI ai : ais) {
-				AI completeAi = RequestProcessor.INSTANCE.getAi(ai.getId(), token).getAi();
+				AI completeAi = requestProcessor.getAi(ai.getId(), token).getAi();
 				completeAis.add(completeAi);
 			}
 			AisHelper.INSTANCE.saveAIs(farmerName, completeAis, aisResponse.getFolders());
-		} catch (ServerException | IOException e) {
+		} catch (Exception e) {
 			logger.error("", e);
 		}
 
