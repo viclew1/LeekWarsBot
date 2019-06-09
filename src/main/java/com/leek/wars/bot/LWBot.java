@@ -9,15 +9,14 @@ import com.leek.wars.bot.util.LWSessionManager;
 import com.leek.wars.bot.util.rest.LWRequestProcessor;
 
 import fr.lewon.bot.AbstractBot;
-import fr.lewon.bot.methods.AbstractBotMethod;
-import fr.lewon.bot.props.IBotProperty;
+import fr.lewon.bot.props.BotProperty;
 import fr.lewon.bot.runner.BotRunner;
 import fr.lewon.bot.runner.Operation;
 
 public class LWBot extends AbstractBot<LWSessionManager, LWRequestProcessor> {
 
-	public LWBot() {
-		super(new LWRequestProcessor());
+	public LWBot(String login, String password, List<BotProperty> properties) {
+		super(new LWRequestProcessor(), login, password, new ArrayList<>());
 	}
 
 	@Override
@@ -26,17 +25,8 @@ public class LWBot extends AbstractBot<LWSessionManager, LWRequestProcessor> {
 	}
 
 	@Override
-	protected List<AbstractBotMethod<?, ?>> initBotMethods(LWSessionManager sessionManager, LWRequestProcessor requestProcessor) {
-		return new ArrayList<>();
-	}
-
-	@Override
-	protected List<Operation<?, ?>> initDefaultOperations(BotRunner runner, LWSessionManager sessionManager, LWRequestProcessor requestProcessor) {
+	protected List<Operation<LWSessionManager, LWRequestProcessor>> getDefaultOperations(BotRunner runner, LWSessionManager sessionManager, LWRequestProcessor requestProcessor) {
 		return Arrays.asList(new DefaultLeekWarsOperation(sessionManager, requestProcessor));
 	}
 
-	@Override
-	protected List<IBotProperty> initProperties() {
-		return null;
-	}
 }
