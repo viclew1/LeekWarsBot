@@ -37,14 +37,14 @@ public class DefaultLeekWarsOperation extends LeekWarsOperation {
 			LeekInfosResponse lir = requestProcessor.getLeekInfos(l.getId(), cookie);
 			if (!lir.getTournament().getRegistered()) {
 				requestProcessor.registerLeekTournament(l.getId(), cookie);
-				runner.logInfo("Leek {} now registered for next tournament.", l.getName());
+				runner.getBotLogger().info("Leek {} now registered for next tournament.", l.getName());
 			} else {
-				runner.logInfo("Leek {} already registered for next tournament.", l.getName());
+				runner.getBotLogger().info("Leek {} already registered for next tournament.", l.getName());
 			}
 			processFight(requestProcessor, l, cookie, fightsPerLeek);
-			runner.logInfo("Leek {} fought {} fights.", l.getName(), fightsPerLeek);
+			runner.getBotLogger().info("Leek {} fought {} fights.", l.getName(), fightsPerLeek);
 		}
-		runner.logInfo("All operations done. Trying again in 1 day");
+		runner.getBotLogger().info("All operations done. Trying again in 1 day");
 		return new Delay(1, TimeScale.DAYS);
 	}
 
