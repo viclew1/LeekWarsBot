@@ -9,9 +9,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>DefaultClient</groupId>
-			<artifactId>DefaultClient</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>DefaultParameterizedApp</groupId>
+			<artifactId>DefaultParameterizedApp</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 
 		<dependency>
