@@ -51,10 +51,8 @@ public class Farmer {
 	@JsonProperty("in_garden")
 	private Integer inGarden;
 	private Integer fights;
-	//TODO github
 	@JsonIgnore
 	private Object github;
-	//TODO website
 	@JsonIgnore
 	private Object website;
 	@JsonProperty("forum_messages")
@@ -71,7 +69,6 @@ public class Farmer {
 	private List<Potion> potions;
 	private List<Hat> hats;
 	private Tournament tournament;
-	//TODO candidacy
 	@JsonIgnore
 	private Object candidacy;
 	

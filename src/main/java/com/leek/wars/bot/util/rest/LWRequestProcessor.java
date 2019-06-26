@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.Header;
-import org.apache.http.HttpResponse;
 import org.apache.http.message.BasicHeader;
 
 import com.leek.wars.bot.entities.input.FightInfosInput;
@@ -23,7 +22,6 @@ import com.leek.wars.bot.util.BodyHelper;
 import fr.lewon.bot.errors.ServerException;
 import fr.lewon.bot.http.AbstractRequestProcessor;
 import fr.lewon.bot.http.DefaultResponse;
-import fr.lewon.bot.http.RequestHelper;
 
 public class LWRequestProcessor extends AbstractRequestProcessor {
 
@@ -48,10 +46,6 @@ public class LWRequestProcessor extends AbstractRequestProcessor {
 
 	private static final String SLASH = "/";
 
-	public LWRequestProcessor() {
-		super(new RequestHelper());
-	}
-
 	@Override
 	protected List<Header> getNeededHeaders() {
 		List<Header> headers = new ArrayList<>();
@@ -68,63 +62,53 @@ public class LWRequestProcessor extends AbstractRequestProcessor {
 	public DefaultResponse<SessionResponse> getSession(String login, String password) throws ServerException, IOException {
 		String url = BASE_URL + API + FARMER + LOGIN;
 		UserInfosInput ui = new UserInfosInput(login, password);
-		HttpResponse response = getRequestHelper().processPostRequest(url, BodyHelper.INSTANCE.generateBody(ui));
-		return generateResponse(SessionResponse.class, response);
+		return processPostRequest(SessionResponse.class, url, BodyHelper.INSTANCE.generateBody(ui));
 	}
 
 	public LeekInfosResponse getLeekInfos(Long leekId, Header cookie) throws IOException, ServerException {
 		String url = BASE_URL + API + LEEK + GET_PRIVATE + SLASH + leekId;
-		HttpResponse response = getRequestHelper().processGetRequest(url, cookie);
-		return generateResponse(LeekInfosResponse.class, response).getEntity();
+		return processGetRequest(LeekInfosResponse.class, url, cookie).getEntity();
 	}
 
 	public void registerFarmerTournament(Header cookie) throws ServerException, IOException {
 		String url = BASE_URL + API + FARMER + REGISTER_TOURNAMENT;
-		HttpResponse response = getRequestHelper().processPostRequest(url,  null, cookie);
-		readBody(response);
+		processPostRequest(url,  null, cookie);
 	}
 
 	public void registerLeekTournament(Long leekId, Header cookie) throws ServerException, IOException {
 		String url = BASE_URL + API + LEEK + REGISTER_TOURNAMENT;
 		LeekInfosInput li = new LeekInfosInput(leekId);
-		HttpResponse response = getRequestHelper().processPostRequest(url, BodyHelper.INSTANCE.generateBody(li), cookie);
-		readBody(response);
+		processPostRequest(url, BodyHelper.INSTANCE.generateBody(li), cookie);
 	}
 
 	public OpponentLeeksResponse getLeekOpponents(Long leekId, Header cookie) throws ServerException, IOException {
 		String url = BASE_URL + API + GARDEN + GET_LEEK_OPPONENTS + SLASH + leekId;
-		HttpResponse response = getRequestHelper().processGetRequest(url, cookie);
-		return generateResponse(OpponentLeeksResponse.class, response).getEntity();
+		return processGetRequest(OpponentLeeksResponse.class, url, cookie).getEntity();
 	}
 
 	public FightIdResponse startLeekFight(Long leekId, Long targetId, Header cookie) throws ServerException, IOException {
 		String url = BASE_URL + API + GARDEN + START_SOLO_FIGHT;
 		FightInfosInput fi = new FightInfosInput(leekId, targetId);
-		HttpResponse response = getRequestHelper().processPostRequest(url, BodyHelper.INSTANCE.generateBody(fi), cookie);
-		return generateResponse(FightIdResponse.class, response).getEntity();
+		return processPostRequest(FightIdResponse.class, url, BodyHelper.INSTANCE.generateBody(fi), cookie).getEntity();
 	}
 
 	public void getGarden(Header cookie) throws ServerException, IOException {
 		String url = BASE_URL + API + GARDEN + GET;
-		HttpResponse response = getRequestHelper().processGetRequest(url, cookie);
-		readBody(response);
+		readAllPageContent(url, cookie);
 	}
 
 	public FightResponse getFight(Long fightId, Header cookie) throws ServerException, IOException {
 		String url = BASE_URL + API + FIGHT + GET + SLASH + fightId;
-		HttpResponse response = getRequestHelper().processGetRequest(url, cookie);
-		return generateResponse(FightResponse.class, response).getEntity();
+		return processGetRequest(FightResponse.class, url, cookie).getEntity();
 	}
 
 	public AisResponse getFarmerAis(Header cookie) throws ServerException, IOException {
 		String url = BASE_URL + API + AI + GET_FARMER_AIS;
-		HttpResponse response = getRequestHelper().processGetRequest(url, cookie);
-		return generateResponse(AisResponse.class, response).getEntity();
+		return processGetRequest(AisResponse.class, url, cookie).getEntity();
 	}
 
 	public AiResponse getAi(Long aiId, Header cookie) throws ServerException, IOException {
 		String url = BASE_URL + API + AI + GET + SLASH + aiId;
-		HttpResponse response = getRequestHelper().processGetRequest(url, cookie);
-		return generateResponse(AiResponse.class, response).getEntity();
+		return processGetRequest(AiResponse.class, url, cookie).getEntity();
 	}
 }
