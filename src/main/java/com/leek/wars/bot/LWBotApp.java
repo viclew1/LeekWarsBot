@@ -25,7 +25,7 @@ public class LWBotApp extends AbstractParameterizedApp {
 	}
 
 	@Override
-	protected void run() throws ParameterizedAppException {
+	protected void run(String[] args) throws ParameterizedAppException {
 		try {
 			BotRunner runner = new LWBotRunnerBuilder().buildRunner(LOGIN_PARAMETER.getValue(), PASSWORD_PARAMETER.getValue());
 			runner.start();
@@ -35,7 +35,7 @@ public class LWBotApp extends AbstractParameterizedApp {
 	}
 	
 	public static void main(String[] args) throws ParameterizedAppException {
-		new LWBotApp().launch();
+		new LWBotApp().launch(args);
 	}
 
 	
