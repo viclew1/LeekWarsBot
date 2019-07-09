@@ -17,11 +17,12 @@ import com.leek.wars.bot.entities.responses.FightResponse;
 import com.leek.wars.bot.entities.responses.LeekInfosResponse;
 import com.leek.wars.bot.entities.responses.OpponentLeeksResponse;
 import com.leek.wars.bot.entities.responses.SessionResponse;
-import com.leek.wars.bot.util.BodyHelper;
 
 import fr.lewon.bot.errors.ServerException;
 import fr.lewon.bot.http.AbstractRequestProcessor;
 import fr.lewon.bot.http.DefaultResponse;
+import fr.lewon.bot.http.body.HttpBodyBuilder;
+import fr.lewon.bot.http.body.urlencoded.FUEBuilder;
 
 public class LWRequestProcessor extends AbstractRequestProcessor {
 
@@ -46,6 +47,8 @@ public class LWRequestProcessor extends AbstractRequestProcessor {
 
 	private static final String SLASH = "/";
 
+	private HttpBodyBuilder bodyBuilder = new FUEBuilder();
+	
 	@Override
 	protected List<Header> getNeededHeaders() {
 		List<Header> headers = new ArrayList<>();
@@ -59,10 +62,10 @@ public class LWRequestProcessor extends AbstractRequestProcessor {
 		return headers;
 	}
 
-	public DefaultResponse<SessionResponse> getSession(String login, String password) throws ServerException, IOException {
+	public DefaultResponse<SessionResponse> getSession(String login, String password) throws Exception {
 		String url = BASE_URL + API + FARMER + LOGIN;
 		UserInfosInput ui = new UserInfosInput(login, password);
-		return processPostRequest(SessionResponse.class, url, BodyHelper.INSTANCE.generateBody(ui));
+		return processPostRequest(SessionResponse.class, url, bodyBuilder.generateBody(ui));
 	}
 
 	public LeekInfosResponse getLeekInfos(Long leekId, Header cookie) throws IOException, ServerException {
@@ -75,10 +78,10 @@ public class LWRequestProcessor extends AbstractRequestProcessor {
 		processPostRequest(url,  null, cookie);
 	}
 
-	public void registerLeekTournament(Long leekId, Header cookie) throws ServerException, IOException {
+	public void registerLeekTournament(Long leekId, Header cookie) throws Exception {
 		String url = BASE_URL + API + LEEK + REGISTER_TOURNAMENT;
 		LeekInfosInput li = new LeekInfosInput(leekId);
-		processPostRequest(url, BodyHelper.INSTANCE.generateBody(li), cookie);
+		processPostRequest(url, bodyBuilder.generateBody(li), cookie);
 	}
 
 	public OpponentLeeksResponse getLeekOpponents(Long leekId, Header cookie) throws ServerException, IOException {
@@ -86,10 +89,10 @@ public class LWRequestProcessor extends AbstractRequestProcessor {
 		return processGetRequest(OpponentLeeksResponse.class, url, cookie).getEntity();
 	}
 
-	public FightIdResponse startLeekFight(Long leekId, Long targetId, Header cookie) throws ServerException, IOException {
+	public FightIdResponse startLeekFight(Long leekId, Long targetId, Header cookie) throws Exception {
 		String url = BASE_URL + API + GARDEN + START_SOLO_FIGHT;
 		FightInfosInput fi = new FightInfosInput(leekId, targetId);
-		return processPostRequest(FightIdResponse.class, url, BodyHelper.INSTANCE.generateBody(fi), cookie).getEntity();
+		return processPostRequest(FightIdResponse.class, url, bodyBuilder.generateBody(fi), cookie).getEntity();
 	}
 
 	public void getGarden(Header cookie) throws ServerException, IOException {

@@ -1,6 +1,5 @@
 package com.leek.wars.bot.operations;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import com.leek.wars.bot.entities.responses.SessionResponse;
 import com.leek.wars.bot.util.LWSessionManager;
 import com.leek.wars.bot.util.rest.LWRequestProcessor;
 
-import fr.lewon.bot.errors.ServerException;
 import fr.lewon.bot.runner.BotRunner;
 import fr.lewon.bot.runner.Delay;
 import fr.lewon.bot.runner.TimeScale;
@@ -48,7 +46,7 @@ public class DefaultLeekWarsOperation extends LeekWarsOperation {
 		return new Delay(1, TimeScale.DAYS);
 	}
 
-	private void processFight(LWRequestProcessor requestProcessor, Leek leek, Header cookie, int count) throws ServerException, IOException {
+	private void processFight(LWRequestProcessor requestProcessor, Leek leek, Header cookie, int count) throws Exception {
 		for (int i = 0 ; i < count ; i++) {
 			OpponentLeeksResponse olr = requestProcessor.getLeekOpponents(leek.getId(), cookie);
 			if (olr.getOpponents() == null || olr.getOpponents().isEmpty()) {

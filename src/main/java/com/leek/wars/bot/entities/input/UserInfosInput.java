@@ -1,16 +1,16 @@
 package com.leek.wars.bot.entities.input;
 
-import com.leek.wars.bot.util.BodyMember;
+import fr.lewon.bot.http.body.urlencoded.FUEMember;
 
 public class UserInfosInput {
 
-	@BodyMember
+	@FUEMember
 	private String login;
 
-	@BodyMember
+	@FUEMember
 	private String password;
 
-	@BodyMember("keep_connected")
+	@FUEMember("keep_connected")
 	private Boolean keepConnected = false;
 
 	public UserInfosInput() {

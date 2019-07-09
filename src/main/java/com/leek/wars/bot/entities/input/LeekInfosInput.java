@@ -1,10 +1,10 @@
 package com.leek.wars.bot.entities.input;
 
-import com.leek.wars.bot.util.BodyMember;
+import fr.lewon.bot.http.body.urlencoded.FUEMember;
 
 public class LeekInfosInput {
 
-	@BodyMember("leek_id")
+	@FUEMember("leek_id")
 	private Long leekId;
 
 	public LeekInfosInput() {

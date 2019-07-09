@@ -1,13 +1,13 @@
 package com.leek.wars.bot.entities.input;
 
-import com.leek.wars.bot.util.BodyMember;
+import fr.lewon.bot.http.body.urlencoded.FUEMember;
 
 public class FightInfosInput {
 
-	@BodyMember("leek_id")
+	@FUEMember("leek_id")
 	private Long leekId;
 
-	@BodyMember("target_id")
+	@FUEMember("target_id")
 	private Long targetId;
 
 
