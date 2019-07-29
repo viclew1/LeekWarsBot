@@ -7,8 +7,4 @@ import fr.lewon.bot.operations.AbstractOperation;
 
 public abstract class LeekWarsOperation extends AbstractOperation<LWSessionManager, LWRequestProcessor> {
 
-	public LeekWarsOperation(LWSessionManager sessionManager, LWRequestProcessor requestProcessor) {
-		super(sessionManager, requestProcessor);
-	}
-
 }

@@ -18,15 +18,11 @@ import fr.lewon.bot.runner.TimeScale;
 
 public class DefaultLeekWarsOperation extends LeekWarsOperation {
 
-	public DefaultLeekWarsOperation(LWSessionManager manager, LWRequestProcessor requestProcessor) {
-		super(manager, requestProcessor);
-	}
-
 	@Override
-	public Delay doProcess(BotRunner runner, LWSessionManager sessionManager, LWRequestProcessor requestProcessor)
+	public Delay process(BotRunner runner, LWSessionManager sessionManager, LWRequestProcessor requestProcessor)
 			throws Exception {
 
-		SessionResponse session = sessionManager.getSession();
+		SessionResponse session = sessionManager.getSession(requestProcessor);
 		Header cookie = session.getCookie();
 		int fightsCount = session.getFarmer().getFights();
 		Collection<Leek> leeks = session.getFarmer().getLeeks().values();

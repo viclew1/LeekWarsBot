@@ -16,8 +16,8 @@ import fr.lewon.bot.http.DefaultResponse;
 
 public class LWSessionManager extends AbstractSessionManager<LWRequestProcessor, SessionResponse> {
 
-	public LWSessionManager(LWRequestProcessor requestProcessor, String login, String password) {
-		super(requestProcessor, login, password, 3600 * 2 * 1000L);
+	public LWSessionManager(String login, String password) {
+		super(login, password, 3600 * 2 * 1000L);
 	}
 
 	@Override

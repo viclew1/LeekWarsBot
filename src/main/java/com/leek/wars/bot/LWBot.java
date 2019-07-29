@@ -19,13 +19,13 @@ public class LWBot extends AbstractBot<LWSessionManager, LWRequestProcessor> {
 	}
 
 	@Override
-	protected LWSessionManager initSessionManager(LWRequestProcessor requestProcessor, String login, String password) {
-		return new LWSessionManager(requestProcessor, login, password);
+	protected LWSessionManager initSessionManager(String login, String password) {
+		return new LWSessionManager(login, password);
 	}
 
 	@Override
 	protected List<AbstractOperation<LWSessionManager, LWRequestProcessor>> getDefaultOperations(BotRunner runner, LWSessionManager sessionManager, LWRequestProcessor requestProcessor) {
-		return Arrays.asList(new DefaultLeekWarsOperation(sessionManager, requestProcessor));
+		return Arrays.asList(new DefaultLeekWarsOperation());
 	}
 
 	@Override
