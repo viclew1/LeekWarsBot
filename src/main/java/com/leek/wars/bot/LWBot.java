@@ -1,36 +1,32 @@
 package com.leek.wars.bot;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.leek.wars.bot.operations.DefaultLeekWarsOperation;
 import com.leek.wars.bot.util.LWSessionManager;
 import com.leek.wars.bot.util.rest.LWRequestProcessor;
-
-import fr.lewon.bot.AbstractBot;
+import fr.lewon.bot.bots.web.AbstractWebBot;
 import fr.lewon.bot.operations.AbstractOperation;
 import fr.lewon.bot.props.BotPropertyStore;
-import fr.lewon.bot.runner.BotRunner;
 
-public class LWBot extends AbstractBot<LWSessionManager, LWRequestProcessor> {
+public class LWBot extends AbstractWebBot<LWBot, LWRequestProcessor, LWSessionManager> {
 
-	public LWBot(String login, String password, BotPropertyStore properties) {
-		super(login, password, properties);
-	}
+    public LWBot(String login, String password, BotPropertyStore properties) {
+        super(login, password, properties);
+    }
 
-	@Override
-	protected LWSessionManager initSessionManager(String login, String password) {
-		return new LWSessionManager(login, password);
-	}
+    @Override
+    protected LWSessionManager initSessionManager(String login, String password) {
+        return new LWSessionManager(login, password);
+    }
 
-	@Override
-	protected List<AbstractOperation<LWSessionManager, LWRequestProcessor>> getDefaultOperations(BotRunner runner, LWSessionManager sessionManager, LWRequestProcessor requestProcessor) {
-		return Arrays.asList(new DefaultLeekWarsOperation());
-	}
 
-	@Override
-	protected LWRequestProcessor initRequestProcessor() {
-		return new LWRequestProcessor();
-	}
+    @Override
+    protected LWRequestProcessor initRequestProcessor() {
+        return new LWRequestProcessor();
+    }
 
+
+    @Override
+    public AbstractOperation<LWBot> getInitialOperation() {
+        return new DefaultLeekWarsOperation();
+    }
 }

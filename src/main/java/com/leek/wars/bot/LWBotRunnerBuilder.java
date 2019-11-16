@@ -1,20 +1,19 @@
 package com.leek.wars.bot;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import fr.lewon.bot.AbstractBotRunnerBuilder;
 import fr.lewon.bot.props.BotPropertyStore;
 
+import java.util.ArrayList;
+
 public class LWBotRunnerBuilder extends AbstractBotRunnerBuilder<LWBot> {
 
-	public LWBotRunnerBuilder() {
-		super(new ArrayList<>(), new HashMap<>());
-	}
+    public LWBotRunnerBuilder() {
+        super(new ArrayList<>(), new ArrayList<>());
+    }
 
-	@Override
-	protected LWBot initBot(String login, String password, BotPropertyStore properties) {
-		return new LWBot(login, password, properties);
-	}
+    @Override
+    protected LWBot buildBot(String login, String password, BotPropertyStore properties) {
+        return new LWBot(login, password, properties);
+    }
 
 }

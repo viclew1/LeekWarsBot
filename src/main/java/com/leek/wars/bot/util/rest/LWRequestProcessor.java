@@ -1,117 +1,109 @@
 package com.leek.wars.bot.util.rest;
 
+import com.leek.wars.bot.entities.input.FightInfosInput;
+import com.leek.wars.bot.entities.input.LeekInfosInput;
+import com.leek.wars.bot.entities.input.UserInfosInput;
+import com.leek.wars.bot.entities.responses.*;
+import fr.lewon.bot.errors.ServerException;
+import fr.lewon.bot.http.DefaultResponse;
+import fr.lewon.bot.http.RequestProcessor;
+import fr.lewon.bot.http.body.HttpBodyBuilder;
+import fr.lewon.bot.http.body.urlencoded.FUEBuilder;
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.Header;
-import org.apache.http.message.BasicHeader;
+public class LWRequestProcessor extends RequestProcessor {
 
-import com.leek.wars.bot.entities.input.FightInfosInput;
-import com.leek.wars.bot.entities.input.LeekInfosInput;
-import com.leek.wars.bot.entities.input.UserInfosInput;
-import com.leek.wars.bot.entities.responses.AiResponse;
-import com.leek.wars.bot.entities.responses.AisResponse;
-import com.leek.wars.bot.entities.responses.FightIdResponse;
-import com.leek.wars.bot.entities.responses.FightResponse;
-import com.leek.wars.bot.entities.responses.LeekInfosResponse;
-import com.leek.wars.bot.entities.responses.OpponentLeeksResponse;
-import com.leek.wars.bot.entities.responses.SessionResponse;
+    private static final String BASE_URL = "https://leekwars.com/";
 
-import fr.lewon.bot.errors.ServerException;
-import fr.lewon.bot.http.AbstractRequestProcessor;
-import fr.lewon.bot.http.DefaultResponse;
-import fr.lewon.bot.http.body.HttpBodyBuilder;
-import fr.lewon.bot.http.body.urlencoded.FUEBuilder;
+    private static final String API = "/api";
 
-public class LWRequestProcessor extends AbstractRequestProcessor {
+    private static final String LEEK = "/leek";
+    private static final String FARMER = "/farmer";
+    private static final String GARDEN = "/garden";
+    private static final String FIGHT = "/fight";
+    private static final String AI = "/ai";
 
-	private static final String BASE_URL = "https://leekwars.com/";
+    private static final String GET = "/get";
+    private static final String GET_PRIVATE = "/get-private";
 
-	private static final String API = "/api";
+    private static final String LOGIN = "/login";
+    private static final String REGISTER_TOURNAMENT = "/register-tournament";
+    private static final String GET_LEEK_OPPONENTS = "/get-leek-opponents";
+    private static final String GET_FARMER_AIS = "/get-farmer-ais";
+    private static final String START_SOLO_FIGHT = "/start-solo-fight";
 
-	private static final String LEEK = "/leek";
-	private static final String FARMER = "/farmer";
-	private static final String GARDEN = "/garden";
-	private static final String FIGHT = "/fight";
-	private static final String AI = "/ai";
+    private static final String SLASH = "/";
 
-	private static final String GET = "/get";
-	private static final String GET_PRIVATE = "/get-private";
+    private HttpBodyBuilder bodyBuilder = new FUEBuilder();
 
-	private static final String LOGIN = "/login";
-	private static final String REGISTER_TOURNAMENT = "/register-tournament";
-	private static final String GET_LEEK_OPPONENTS = "/get-leek-opponents";
-	private static final String GET_FARMER_AIS = "/get-farmer-ais";
-	private static final String START_SOLO_FIGHT = "/start-solo-fight";
+    @Override
+    protected List<Header> getNeededHeaders() {
+        List<Header> headers = new ArrayList<>();
+        headers.add(new BasicHeader("Accept", "*/*"));
+        headers.add(new BasicHeader("Accept-Language", "fr-FR,fr;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6"));
+        headers.add(new BasicHeader("Connection", "keep-alive"));
+        headers.add(new BasicHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"));
+        headers.add(new BasicHeader("Host", "leekwars.com"));
+        headers.add(new BasicHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36"));
+        headers.add(new BasicHeader("Authorization", "Bearer $"));
+        return headers;
+    }
 
-	private static final String SLASH = "/";
+    public DefaultResponse<SessionResponse> getSession(String login, String password) throws Exception {
+        String url = BASE_URL + API + FARMER + LOGIN;
+        UserInfosInput ui = new UserInfosInput(login, password);
+        return this.processPostRequest(SessionResponse.class, url, this.bodyBuilder.generateBody(ui));
+    }
 
-	private HttpBodyBuilder bodyBuilder = new FUEBuilder();
-	
-	@Override
-	protected List<Header> getNeededHeaders() {
-		List<Header> headers = new ArrayList<>();
-		headers.add(new BasicHeader("Accept", "*/*"));
-		headers.add(new BasicHeader("Accept-Language", "fr-FR,fr;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6"));
-		headers.add(new BasicHeader("Connection", "keep-alive"));
-		headers.add(new BasicHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"));
-		headers.add(new BasicHeader("Host", "leekwars.com"));
-		headers.add(new BasicHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36"));
-		headers.add(new BasicHeader("Authorization", "Bearer $"));
-		return headers;
-	}
+    public LeekInfosResponse getLeekInfos(Long leekId, Header cookie) throws IOException, ServerException {
+        String url = BASE_URL + API + LEEK + GET_PRIVATE + SLASH + leekId;
+        return this.processGetRequest(LeekInfosResponse.class, url, cookie).getEntity();
+    }
 
-	public DefaultResponse<SessionResponse> getSession(String login, String password) throws Exception {
-		String url = BASE_URL + API + FARMER + LOGIN;
-		UserInfosInput ui = new UserInfosInput(login, password);
-		return processPostRequest(SessionResponse.class, url, bodyBuilder.generateBody(ui));
-	}
+    public void registerFarmerTournament(Header cookie) throws ServerException, IOException {
+        String url = BASE_URL + API + FARMER + REGISTER_TOURNAMENT;
+        this.processPostRequest(url, null, cookie);
+    }
 
-	public LeekInfosResponse getLeekInfos(Long leekId, Header cookie) throws IOException, ServerException {
-		String url = BASE_URL + API + LEEK + GET_PRIVATE + SLASH + leekId;
-		return processGetRequest(LeekInfosResponse.class, url, cookie).getEntity();
-	}
+    public void registerLeekTournament(Long leekId, Header cookie) throws Exception {
+        String url = BASE_URL + API + LEEK + REGISTER_TOURNAMENT;
+        LeekInfosInput li = new LeekInfosInput(leekId);
+        this.processPostRequest(url, this.bodyBuilder.generateBody(li), cookie);
+    }
 
-	public void registerFarmerTournament(Header cookie) throws ServerException, IOException {
-		String url = BASE_URL + API + FARMER + REGISTER_TOURNAMENT;
-		processPostRequest(url,  null, cookie);
-	}
+    public OpponentLeeksResponse getLeekOpponents(Long leekId, Header cookie) throws ServerException, IOException {
+        String url = BASE_URL + API + GARDEN + GET_LEEK_OPPONENTS + SLASH + leekId;
+        return this.processGetRequest(OpponentLeeksResponse.class, url, cookie).getEntity();
+    }
 
-	public void registerLeekTournament(Long leekId, Header cookie) throws Exception {
-		String url = BASE_URL + API + LEEK + REGISTER_TOURNAMENT;
-		LeekInfosInput li = new LeekInfosInput(leekId);
-		processPostRequest(url, bodyBuilder.generateBody(li), cookie);
-	}
+    public FightIdResponse startLeekFight(Long leekId, Long targetId, Header cookie) throws Exception {
+        String url = BASE_URL + API + GARDEN + START_SOLO_FIGHT;
+        FightInfosInput fi = new FightInfosInput(leekId, targetId);
+        return this.processPostRequest(FightIdResponse.class, url, this.bodyBuilder.generateBody(fi), cookie).getEntity();
+    }
 
-	public OpponentLeeksResponse getLeekOpponents(Long leekId, Header cookie) throws ServerException, IOException {
-		String url = BASE_URL + API + GARDEN + GET_LEEK_OPPONENTS + SLASH + leekId;
-		return processGetRequest(OpponentLeeksResponse.class, url, cookie).getEntity();
-	}
+    public void getGarden(Header cookie) throws ServerException, IOException {
+        String url = BASE_URL + API + GARDEN + GET;
+        this.readAllPageContent(url, cookie);
+    }
 
-	public FightIdResponse startLeekFight(Long leekId, Long targetId, Header cookie) throws Exception {
-		String url = BASE_URL + API + GARDEN + START_SOLO_FIGHT;
-		FightInfosInput fi = new FightInfosInput(leekId, targetId);
-		return processPostRequest(FightIdResponse.class, url, bodyBuilder.generateBody(fi), cookie).getEntity();
-	}
+    public FightResponse getFight(Long fightId, Header cookie) throws ServerException, IOException {
+        String url = BASE_URL + API + FIGHT + GET + SLASH + fightId;
+        return this.processGetRequest(FightResponse.class, url, cookie).getEntity();
+    }
 
-	public void getGarden(Header cookie) throws ServerException, IOException {
-		String url = BASE_URL + API + GARDEN + GET;
-		readAllPageContent(url, cookie);
-	}
+    public AisResponse getFarmerAis(Header cookie) throws ServerException, IOException {
+        String url = BASE_URL + API + AI + GET_FARMER_AIS;
+        return this.processGetRequest(AisResponse.class, url, cookie).getEntity();
+    }
 
-	public FightResponse getFight(Long fightId, Header cookie) throws ServerException, IOException {
-		String url = BASE_URL + API + FIGHT + GET + SLASH + fightId;
-		return processGetRequest(FightResponse.class, url, cookie).getEntity();
-	}
-
-	public AisResponse getFarmerAis(Header cookie) throws ServerException, IOException {
-		String url = BASE_URL + API + AI + GET_FARMER_AIS;
-		return processGetRequest(AisResponse.class, url, cookie).getEntity();
-	}
-
-	public AiResponse getAi(Long aiId, Header cookie) throws ServerException, IOException {
-		String url = BASE_URL + API + AI + GET + SLASH + aiId;
-		return processGetRequest(AiResponse.class, url, cookie).getEntity();
-	}
+    public AiResponse getAi(Long aiId, Header cookie) throws ServerException, IOException {
+        String url = BASE_URL + API + AI + GET + SLASH + aiId;
+        return this.processGetRequest(AiResponse.class, url, cookie).getEntity();
+    }
 }
