@@ -27,7 +27,7 @@ class DefaultLeekWarsTask(bot: Bot) : BotTask("Fights and tournament register", 
         val requestProcessor = LWRequestProcessor()
         for (l in leeks) {
             val lir = requestProcessor.getLeekInfos(webClient, session, l.id)
-            if (lir?.tournament?.registered == true) {
+            if (lir?.tournament?.registered == false) {
                 requestProcessor.registerLeekTournament(webClient, session, l.id)
                 bot.logger.info("Leek [${l.name}] now registered for next tournament")
             } else {
@@ -35,7 +35,6 @@ class DefaultLeekWarsTask(bot: Bot) : BotTask("Fights and tournament register", 
             }
             processFight(webClient, session, requestProcessor, l, fightsPerLeek)
             bot.logger.info("Leek [${l.name}] fought $fightsPerLeek fights")
-            requestProcessor.registerLeekTournament(webClient, session, l.id)
         }
         bot.logger.info("All operations done. Next run in 1 day")
         return TaskResult(Delay(1, TimeUnit.DAYS))

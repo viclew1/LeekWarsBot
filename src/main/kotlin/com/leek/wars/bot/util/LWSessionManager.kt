@@ -10,17 +10,21 @@ class LWSessionManager(login: String, password: String, webClientBuilder: WebCli
         AbstractSessionManager(login, password, 3600 * 2 * 1000L, webClientBuilder) {
 
     override fun generateSessionObject(webClient: WebClient, login: String, password: String): Any {
-        val connectResponse = LWRequestProcessor().getSession(getWebClient(), login, password)
+        val connectResponse = LWRequestProcessor().getSession(webClient, login, password)
         val session = connectResponse
                 ?.bodyToMono<SessionResponse>()
-                ?.block() ?: throw Exception("Impossible to connect to Leek wars")
-        val cookieValues = HashMap<String, String>()
-        cookieValues.putAll(connectResponse.cookies().map { e ->
-            e.key to e.value.joinToString(separator = "; ") { it.value }
-        })
-        session.cookieValue = cookieValues.map { "${it.key}=${it.value}" }
-                .joinToString(separator = "; ")
+                ?.block() ?: throw Exception("Unable to connect to Leek wars, unknown error")
+
+
+        session.cookieValue = connectResponse.cookies()
+                .getFirst("token")
+                .let { "${it.name}=${it.value}" }
+                .plus("; ")
+                .plus(connectResponse.headers().asHttpHeaders()
+                        .getFirst("Set-Cookie") ?: "")
         session.cookieName = "Cookie"
+
+        connectResponse.releaseBody()
         return session
     }
 

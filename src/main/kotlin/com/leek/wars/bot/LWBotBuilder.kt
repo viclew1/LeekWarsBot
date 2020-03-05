@@ -14,7 +14,6 @@ class LWBotBuilder : AbstractBotBuilder(emptyList(), emptyList()) {
         return LWSessionManager(login, password,
                 WebClient.builder()
                         .baseUrl("https://leekwars.com/")
-                        .codecs { c -> c.defaultCodecs().maxInMemorySize(-1) }
                         .defaultHeader("Accept", "*/*")
                         .defaultHeader("Accept-Language", "fr-FR,fr;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6")
                         .defaultHeader("Connection", "keep-alive")
