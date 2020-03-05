@@ -24,7 +24,7 @@ class LWSessionManager(login: String, password: String, webClientBuilder: WebCli
                         .getFirst("Set-Cookie") ?: "")
         session.cookieName = "Cookie"
 
-        connectResponse.releaseBody()
+        connectResponse.releaseBody().block()
         return session
     }
 
