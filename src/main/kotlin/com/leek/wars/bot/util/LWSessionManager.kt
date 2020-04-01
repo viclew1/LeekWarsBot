@@ -15,7 +15,6 @@ class LWSessionManager(login: String, password: String, webClientBuilder: WebCli
                 ?.bodyToMono<SessionResponse>()
                 ?.block() ?: throw Exception("Unable to connect to Leek wars, unknown error")
 
-
         session.cookieValue = connectResponse.cookies()
                 .getFirst("token")
                 .let { "${it.name}=${it.value}" }

@@ -13,13 +13,13 @@ import kotlin.math.abs
 
 class DefaultLeekWarsTask(bot: Bot) : BotTask("Fights and tournament register", bot) {
 
-    override fun doExecute(bot: Bot): TaskResult {
+    override fun doExecute(): TaskResult {
         val webClient = bot.sessionManager.getWebClient()
         val session = bot.sessionManager.getSession() as SessionResponse
         val fightsCount = session.farmer?.fights ?: 0
         val leeks = session.farmer?.leeks?.values ?: emptyList()
         if (leeks.isEmpty()) {
-            bot.logger.info("No leek found, trying again in 1 day")
+            logger.info("No leek found, trying again in 1 day")
             return TaskResult(Delay(1, TimeUnit.DAYS))
         }
 
@@ -29,14 +29,14 @@ class DefaultLeekWarsTask(bot: Bot) : BotTask("Fights and tournament register", 
             val lir = requestProcessor.getLeekInfos(webClient, session, l.id)
             if (lir?.tournament?.registered == false) {
                 requestProcessor.registerLeekTournament(webClient, session, l.id)
-                bot.logger.info("Leek [${l.name}] now registered for next tournament")
+                logger.info("Leek [${l.name}] now registered for next tournament")
             } else {
-                bot.logger.info("Leek [${l.name}] already registered for next tournament")
+                logger.info("Leek [${l.name}] already registered for next tournament")
             }
             processFight(webClient, session, requestProcessor, l, fightsPerLeek)
-            bot.logger.info("Leek [${l.name}] fought $fightsPerLeek fights")
+            logger.info("Leek [${l.name}] fought $fightsPerLeek fights")
         }
-        bot.logger.info("All operations done. Next run in 1 day")
+        logger.info("All operations done. Next run in 1 day")
         return TaskResult(Delay(1, TimeUnit.DAYS))
     }
 
