@@ -4,14 +4,22 @@ import com.leek.wars.bot.operations.DefaultLeekWarsTask
 import com.leek.wars.bot.util.LWSessionManager
 import fr.lewon.bot.runner.AbstractBotBuilder
 import fr.lewon.bot.runner.Bot
+import fr.lewon.bot.runner.bot.props.BotPropertyDescriptor
+import fr.lewon.bot.runner.bot.props.BotPropertyStore
+import fr.lewon.bot.runner.bot.props.BotPropertyType
 import fr.lewon.bot.runner.bot.task.BotTask
 import fr.lewon.bot.runner.session.AbstractSessionManager
 import org.springframework.web.reactive.function.client.WebClient
 
-class LWBotBuilder : AbstractBotBuilder(emptyList(), emptyList()) {
+class LWBotBuilder : AbstractBotBuilder(
+        expectedLoginProperties = listOf(
+                BotPropertyDescriptor("Password", BotPropertyType.STRING, null, "Your account password", isNeeded = true, isNullable = false)
+        ),
+        botPropertyDescriptors = emptyList(),
+        botOperations = emptyList()) {
 
-    override fun buildSessionManager(login: String, password: String): AbstractSessionManager {
-        return LWSessionManager(login, password,
+    override fun buildSessionManager(login: String, loginPropertyStore: BotPropertyStore): AbstractSessionManager {
+        return LWSessionManager(login, loginPropertyStore,
                 WebClient.builder()
                         .baseUrl("https://leekwars.com/")
                         .defaultHeader("Accept", "*/*")
