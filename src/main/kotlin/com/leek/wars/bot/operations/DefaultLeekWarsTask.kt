@@ -14,8 +14,9 @@ import kotlin.math.abs
 class DefaultLeekWarsTask(bot: Bot) : BotTask("Fights and tournament register", bot) {
 
     override fun doExecute(): TaskResult {
-        val webClient = bot.sessionManager.getWebClient()
-        val session = bot.sessionManager.getSession() as SessionResponse
+        val sessionHolder = bot.sessionManager.buildSessionHolder()
+        val session = sessionHolder.sessionObject as SessionResponse
+        val webClient = sessionHolder.webClient
         val fightsCount = session.farmer?.fights ?: 0
         val leeks = session.farmer?.leeks?.values ?: emptyList()
         if (leeks.isEmpty()) {
