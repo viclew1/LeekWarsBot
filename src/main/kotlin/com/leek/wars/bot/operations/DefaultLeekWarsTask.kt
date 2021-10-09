@@ -41,12 +41,17 @@ class DefaultLeekWarsTask(bot: Bot) : BotTask("Fights and tournament register", 
         return TaskResult(Delay(1, TimeUnit.DAYS))
     }
 
-    @Throws(Exception::class)
-    private fun processFight(webClient: WebClient, session: SessionResponse, requestProcessor: LWRequestProcessor, leek: Leek, count: Int) {
+    private fun processFight(
+        webClient: WebClient,
+        session: SessionResponse,
+        requestProcessor: LWRequestProcessor,
+        leek: Leek,
+        count: Int
+    ) {
         for (i in 0 until count) {
             val opponents = requestProcessor.getLeekOpponents(webClient, session, leek.id)
-                    ?.opponents
-                    ?: emptyList()
+                ?.opponents
+                ?: emptyList()
             selectOpponent(leek, opponents)?.let {
                 requestProcessor.startLeekFight(webClient, session, leek.id, it.id)
             }
@@ -54,7 +59,7 @@ class DefaultLeekWarsTask(bot: Bot) : BotTask("Fights and tournament register", 
     }
 
     private fun selectOpponent(leek: Leek, opponents: List<Leek>): Leek? {
-        return opponents.maxBy { getDist(leek, it) }
+        return opponents.maxByOrNull { getDist(leek, it) }
     }
 
     private fun getDist(l1: Leek, l2: Leek): Int {
