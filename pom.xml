@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>lewon.bot.manager</groupId>
     <artifactId>LWBot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,8 +19,8 @@
     <dependencies>
         <dependency>
             <groupId>fr.lewon</groupId>
-            <artifactId>SpringBotRunner</artifactId>
-            <version>1.0.0</version>
+            <artifactId>VLBotRunner</artifactId>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

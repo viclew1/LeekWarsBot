@@ -15,48 +15,48 @@ class LWRequestProcessor {
 
     fun getSession(webClient: WebClient, login: String, password: String): ClientResponse? {
         return webClient.post()
-                .uri(API + FARMER + LOGIN)
-                .bodyValue(FUEBodyBuilder().generateBody(UserInfosInput(login, password)))
-                .exchange()
-                .block()
+            .uri(API + FARMER + LOGIN)
+            .bodyValue(FUEBodyBuilder.generateBody(UserInfosInput(login, password)))
+            .exchange()
+            .block()
     }
 
     fun getLeekInfos(webClient: WebClient, session: SessionResponse, leekId: Long): LeekInfosResponse? {
         return webClient.get()
-                .uri(API + LEEK + GET_PRIVATE + SLASH + leekId)
-                .header(session.cookieName, session.cookieValue)
-                .retrieve()
-                .bodyToMono(LeekInfosResponse::class.java)
-                .block()
+            .uri(API + LEEK + GET_PRIVATE + SLASH + leekId)
+            .header(session.cookieName, session.cookieValue)
+            .retrieve()
+            .bodyToMono(LeekInfosResponse::class.java)
+            .block()
     }
 
     fun registerLeekTournament(webClient: WebClient, session: SessionResponse, id: Long) {
         webClient.post()
-                .uri(API + LEEK + REGISTER_TOURNAMENT)
-                .header(session.cookieName, session.cookieValue)
-                .bodyValue(FUEBodyBuilder().generateBody(LeekInfosInput(id)))
-                .retrieve()
-                .toBodilessEntity()
-                .block()
+            .uri(API + LEEK + REGISTER_TOURNAMENT)
+            .header(session.cookieName, session.cookieValue)
+            .bodyValue(FUEBodyBuilder.generateBody(LeekInfosInput(id)))
+            .retrieve()
+            .toBodilessEntity()
+            .block()
     }
 
     fun getLeekOpponents(webClient: WebClient, session: SessionResponse, leekId: Long): OpponentLeeksResponse? {
         return webClient.get()
-                .uri(API + GARDEN + GET_LEEK_OPPONENTS + SLASH + leekId)
-                .header(session.cookieName, session.cookieValue)
-                .retrieve()
-                .bodyToMono(OpponentLeeksResponse::class.java)
-                .block()
+            .uri(API + GARDEN + GET_LEEK_OPPONENTS + SLASH + leekId)
+            .header(session.cookieName, session.cookieValue)
+            .retrieve()
+            .bodyToMono(OpponentLeeksResponse::class.java)
+            .block()
     }
 
     fun startLeekFight(webClient: WebClient, session: SessionResponse, leekId: Long, targetId: Long): FightIdResponse? {
         return webClient.post()
-                .uri(API + GARDEN + START_SOLO_FIGHT)
-                .header(session.cookieName, session.cookieValue)
-                .bodyValue(FUEBodyBuilder().generateBody(FightInfosInput(leekId, targetId)))
-                .retrieve()
-                .bodyToMono(FightIdResponse::class.java)
-                .block()
+            .uri(API + GARDEN + START_SOLO_FIGHT)
+            .header(session.cookieName, session.cookieValue)
+            .bodyValue(FUEBodyBuilder.generateBody(FightInfosInput(leekId, targetId)))
+            .retrieve()
+            .bodyToMono(FightIdResponse::class.java)
+            .block()
     }
 
 
